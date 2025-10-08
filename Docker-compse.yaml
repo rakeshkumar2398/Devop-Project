@@ -1,0 +1,58 @@
+###Install maven in Jenkins 
+
+version: '3.9'
+
+networks:
+  cicd-net:
+
+volumes:
+  jenkins_data:
+  sonar_data:
+  sonar_extensions:
+  sonar_logs:
+
+services:
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins-ct
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins_data:/var/jenkins_home
+    networks:
+      - cicd-net
+
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonar-ct
+    ports:
+      - "8082:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonar_data:/opt/sonarqube/data
+      - sonar_extensions:/opt/sonarqube/extensions
+      - sonar_logs:/opt/sonarqube/logs
+    networks:
+      - cicd-net
+
+  tomcat:
+    image: tomcat:latest
+    container_name: tomcat-ct
+    ports:
+      - "8083:8080"
+    networks:
+      - cicd-net
+
+  trivy:
+    image: aquasec/trivy:latest
+    container_name: trivy-ct
+    entrypoint: ["tail", "-f", "/dev/null"]  # keep container running
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./trivy-reports:/workspace
+    networks:
+      - cicd-net
