@@ -33,7 +33,7 @@ pipeline {
 
         stage('TOMCAT-STORES-WAR') {
             steps {
-				sh 'docker cp ${WORKSPACE}/target/*.war tomcat-ct:/usr/local/tomcat/webapps/'
+				sh "docker cp ${WORKSPACE}/target/*.war tomcat-ct:/usr/local/tomcat/webapps/"
             }
         }
 
