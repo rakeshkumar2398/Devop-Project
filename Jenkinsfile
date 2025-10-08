@@ -34,7 +34,7 @@ pipeline {
         stage('TOMCAT-STORES-WAR') {
    			 steps {
         		 sh "ls ${env.WORKSPACE}/target"
-        		 sh "docker cp ${env.WORKSPACE}/target/*.war tomcat-ct:/usr/local/tomcat/webapps/"
+        		 sh 'docker cp /var/jenkins_home/workspace/Project*/target/*.war tomcat-ct:/usr/local/tomcat/webapps/'
 			 }
 		}
 		
