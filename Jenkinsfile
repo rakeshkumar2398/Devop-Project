@@ -19,8 +19,8 @@ pipeline {
                 sh '''
                     mvn sonar:sonar \
                       -Dsonar.projectKey=Devop-Project \
-                      -Dsonar.host.url=http://13.233.77.77:8082 \
-                      -Dsonar.login=squ_b31bf2ad9bc4f8ab8d162fe9b6ce11fb9a7689dc
+                      -Dsonar.host.url=http://15.206.89.172:8082 \
+                      -Dsonar.login=squ_1ffb0f15117aeeb25f26554d771a90fc50b5e495
                 '''
             }
         }
