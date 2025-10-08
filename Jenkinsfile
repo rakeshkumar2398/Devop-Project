@@ -31,12 +31,18 @@ pipeline {
             }
         }
 
-        stage('TOMCAT-STORES-WAR') {
-   			 steps {
-        		 sh ''' docker cp ${WORKSPACE}/target/*.war tomcat-ct:/usr/local/tomcat/webapps/
-            			docker restart tomcat-ct '''
-			 }
-		}
+        stage('TOMCAT-DEPLOY') {
+    steps {
+        echo '🚀 Copying WAR file to Tomcat container...'
+        sh '''
+            WAR_FILE=$(find /var/jenkins_home/workspace/ -type f -name "*.war" | head -n 1)
+            echo "📦 Found WAR: $WAR_FILE"
+            docker cp "$WAR_FILE" tomcat-ct:/usr/local/tomcat/webapps/
+            docker restart tomcat-ct
+            echo "✅ Deployment completed successfully!"
+        '''
+    }
+}
 		
         stage('DOCKER-BUILD-IMAGE') {
             steps {
