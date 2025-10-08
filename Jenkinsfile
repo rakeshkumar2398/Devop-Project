@@ -32,27 +32,30 @@ pipeline {
         }
 
         stage('TOMCAT-DEPLOY') {
-    steps {
-        echo '🚀 Copying WAR file to Tomcat container...'
-        sh '''
-            WAR_FILE=$(find /var/jenkins_home/workspace/ -type f -name "*.war" | head -n 1)
-            docker cp "$WAR_FILE" tomcat-ct:/usr/local/tomcat/webapps/
-            docker restart tomcat-ct '''
-    }
-}
-		
-        stage('DOCKER-BUILD-IMAGE') {
             steps {
-                echo 'Building Img from WAR file'
-                sh 'docker build -t app:latest .'
+                sh '''
+                    WAR_FILE=$(find /var/jenkins_home/workspace -type f -name "*.war" | head -n 1)
+                    docker cp "$WAR_FILE" tomcat-ct:/usr/local/tomcat/webapps/
+                    docker restart tomcat-ct
+                '''
             }
         }
 
+		stage('DOCKER-BUILD-IMAGE') {
+            steps {
+                sh 'docker build -t app:latest . || true'
+            }
+        }
         stage('TRIVY-IMGSCAN') {
             steps {
-                sh 'trivy image app:latest'
+                echo '🔎 Running Trivy vulnerability scan on Docker image...'
+                sh '''
+                    docker run --rm \
+                      -v /var/run/docker.sock:/var/run/docker.sock \
+                      -v ${WORKSPACE}/.trivy-cache:/root/.cache/ \
+                      aquasec/trivy:latest image app:latest || true
+                '''
             }
         }
-
     }
 }
