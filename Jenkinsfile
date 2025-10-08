@@ -32,12 +32,12 @@ pipeline {
         }
 
         stage('TOMCAT-STORES-WAR') {
-            steps {
-				sh "ls ${env.WORKSPACE}/target"
-        		sh "docker cp ${env.WORKSPACE}/target/*.war tomcat-ct:/usr/local/tomcat/webapps/"
-            }
-        }
-
+   			 steps {
+        		 sh "ls ${env.WORKSPACE}/target"
+        		 sh "docker cp ${env.WORKSPACE}/target/*.war tomcat-ct:/usr/local/tomcat/webapps/"
+			 }
+		}
+		
         stage('DOCKER-BUILD-IMAGE') {
             steps {
                 echo 'Building Img from WAR file'
