@@ -1,935 +1,176 @@
-
-
-    
-    <!DOCTYPE html>
-    <html class="" lang="en" dir="ltr">
-    <head>
-        <title>        Log In
- | Red Hat IDP</title>
-        <script>
-            var host = window.location.hostname;
-            if (host == "sso.stage.redhat.com") {document.write('\x3Cscript id="trustarc" type="text/javascript" src="//static.redhat.com/libs/redhat/marketing/latest/trustarc/trustarc.stage.js" async="" data-domain="redhat_test.com" data-debug="">\x3C/script>');}
-            if (host == "sso.redhat.com") {document.write('\x3Cscript id="trustarc" type="text/javascript" src="//static.redhat.com/libs/redhat/marketing/latest/trustarc/trustarc.js">\x3C/script>');}
-        </script>
-
-<script type="text/javascript">
-    /* for EDDL */
-    window.appEventData = window.appEventData || [];
-
-    /* Variables */
-    const pageName = document.getElementsByTagName("title")[0].innerHTML.trim().replace(/\n/g, ' ');
-    const pathName = window.location.pathname.replace(/\//g, '|');
-    
-    const getQueryParams = () => {
-      return window.location.href.split('?')[1] ? window.location.href.split('?')[1].replace(/=/g,':').split('&') : "";
-    }
-    const queryString = window.location.search;
-    const queryParams = new URLSearchParams(queryString);
-    let redirectUri = queryParams.get("redirect_uri");
-    let client = queryParams.get("client_id");
-
-    function getPageCategories() {
-      const relURL = window.location.pathname; 
-      const categories = { primaryCategory: "", subCategories: [] },
-      url = relURL.split('?')[0].split('#')[0].split(/\//);
-      
-      for (let i=1, l=url.length; i<l; i++) {
-        if (i !== 1 && i <= 7) {
-          categories.subCategories.push(url[i]);
-        }
-        if (i === 1) {
-          categories.primaryCategory = url[i].length > 0 ? url[i] : "root";
-        }
-      }
-      return categories;
-    }
-
-    const categories = getPageCategories();
-
-    /* Page load started */
-    appEventData.push({
-      "event": "Page Load Started",
-      "page": {
-        "pageCategory": categories.primaryCategory,
-        "pageName": "SSO" + pathName,
-        "siteName": "SSO",
-        "siteExperience": (window.innerWidth <= 768) ? "mobile" : "desktop",
-        "pageType": client,
-        "pageSubType": "rhfull",
-        "siteLanguage": "en",
-        "destinationURL": redirectUri ? redirectUri : "https://sso.redhat.com"
-      }
-    });
-    
-    /* User detected event */
-    appEventData.push({
-      "event": "User Detected",
-      "user": {
-        "ebsAccountNumber": "",
-        "hashedEmail": "",
-        "lastLoginDate": "",
-        "loggedIn": false,
-        "organizationID": "",
-        "socialAccountsLinked": "",
-        "ssoClientID": "",
-        "userID": "",
-        "pageType": client
-      }
-    });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src https://a.b.cdn.console.awsstatic.com; object-src 'none'; base-uri 'none'; upgrade-insecure-requests ; connect-src https://ap-south-1.console.aws.amazon.com/console/tb/creds https://*.ccs.amazonaws.com https://*.ccs.console.api.aws https://*.console.aws.amazon.com/api-proxy/ https://*.console.aws.amazon.com/api/ https://*.ctrl.prod.os.notifications.aws.dev https://ap-south-1.console-api.aws.amazon.com/proxycheck https://ap-south-1.console.aws.amazon.com/cct/nav/private-beta https://ap-south-1.console.aws.amazon.com/features-proxy/ https://ap-south-1.console.aws.amazon.com/p/pref/ https://ap-south-1.console.aws.amazon.com/panoramaroute https://ap-south-1.console.aws.amazon.com/telemetry https://ap-south-1.prod.pl.analytics.console.aws.a2z.com https://ap-south-1.prod.pl.panorama.console.api.aws https://ap-south-1.prod.pr.analytics.console.aws.a2z.com https://ap-south-1.prod.pr.panorama.console.api.aws https://cell-0.ap-south-1.prod.telemetry.console.api.aws https://console.aws.amazon.com/aperture/ https://console.aws.amazon.com/panoramaroute https://fileupload.aperture-api.analytics.console.aws.a2z.com https://freetier.us-east-1.api.aws/ https://global.console.aws.amazon.com/lotus/metadata https://global.semantic.unifiedsearch.console.api.aws https://global.unifiedsearch.console.api.aws/search https://health.aws.amazon.com https://phd.aws.amazon.com https://presignedurl.aperture-api.analytics.console.aws.a2z.com https://prod.log.shortbread.analytics.console.aws.a2z.com https://prod.log.shortbread.console.api.aws https://prod.tools.shortbread.analytics.console.aws.a2z.com https://prod.tools.shortbread.panorama.console.api.aws https://semantic.unifiedsearch.amazonaws.com https://telemetry.cell-0.ap-south-1.prod.tangerinebox.console.aws.a2z.com https://unifiedsearch.amazonaws.com/search https://us-east-1.console.aws.amazon.com/feedback/custsat/ https://uxc.us-east-1.api.aws/ https://ap-south-1.console.aws.amazon.com/p/log/ https://cell-0.ap-south-1.prod.telemetry.console.api.aws/telemetry https://telemetry.cell-0.ap-south-1.prod.tangerinebox.console.aws.a2z.com/telemetry https://global.help-panel.docs.aws.a2z.com https://ec2.ap-south-1.amazonaws.com https://d2c.aws.amazon.com/csds/data/ https://target.aws.amazon.com/placements/ https://aws.amazon.com/token/jwt https://d2c.aws.amazon.com/csds/v2/metrics https://aws.amazon.com/csds/v2/metrics https://aws.amazon.com/csds/data/ https://servicecatalog-appregistry.eu-north-1.amazonaws.com https://servicecatalog-appregistry.me-south-1.amazonaws.com https://servicecatalog-appregistry.ap-south-1.amazonaws.com https://servicecatalog-appregistry.eu-west-3.amazonaws.com https://servicecatalog-appregistry.ap-southeast-3.amazonaws.com https://servicecatalog-appregistry.us-east-2.amazonaws.com https://servicecatalog-appregistry.af-south-1.amazonaws.com https://servicecatalog-appregistry.eu-west-1.amazonaws.com https://servicecatalog-appregistry.me-central-1.amazonaws.com https://servicecatalog-appregistry.eu-central-1.amazonaws.com https://servicecatalog-appregistry.sa-east-1.amazonaws.com https://servicecatalog-appregistry.ap-east-1.amazonaws.com https://servicecatalog-appregistry.ap-south-2.amazonaws.com https://servicecatalog-appregistry.us-east-1.amazonaws.com https://servicecatalog-appregistry.ap-northeast-2.amazonaws.com https://servicecatalog-appregistry.ap-northeast-3.amazonaws.com https://servicecatalog-appregistry.eu-west-2.amazonaws.com https://servicecatalog-appregistry.ap-southeast-4.amazonaws.com https://servicecatalog-appregistry.eu-south-1.amazonaws.com https://servicecatalog-appregistry.ap-northeast-1.amazonaws.com https://servicecatalog-appregistry.us-west-2.amazonaws.com https://servicecatalog-appregistry.us-west-1.amazonaws.com https://servicecatalog-appregistry.ap-southeast-1.amazonaws.com https://servicecatalog-appregistry.ap-southeast-2.amazonaws.com https://servicecatalog-appregistry.il-central-1.amazonaws.com https://servicecatalog-appregistry.ca-central-1.amazonaws.com https://servicecatalog-appregistry.ca-west-1.amazonaws.com https://servicecatalog-appregistry.eu-south-2.amazonaws.com https://servicecatalog-appregistry.eu-central-2.amazonaws.com https://latency-test.beta.dp.public.lotus.awt.aws.a2z.com/ https://cf-latency-test.beta.public.lotus.awt.aws.a2z.com/ https://securityhub.af-south-1.amazonaws.com/insights/adhoc https://securityhub.ap-east-1.amazonaws.com/insights/adhoc https://securityhub.ap-east-2.amazonaws.com/insights/adhoc https://securityhub.ap-northeast-1.amazonaws.com/insights/adhoc https://securityhub.ap-northeast-2.amazonaws.com/insights/adhoc https://securityhub.ap-northeast-3.amazonaws.com/insights/adhoc https://securityhub.ap-south-1.amazonaws.com/insights/adhoc https://securityhub.ap-south-2.amazonaws.com/insights/adhoc https://securityhub.ap-southeast-1.amazonaws.com/insights/adhoc https://securityhub.ap-southeast-2.amazonaws.com/insights/adhoc https://securityhub.ap-southeast-3.amazonaws.com/insights/adhoc https://securityhub.ap-southeast-4.amazonaws.com/insights/adhoc https://securityhub.ap-southeast-5.amazonaws.com/insights/adhoc https://securityhub.ap-southeast-6.amazonaws.com/insights/adhoc https://securityhub.ap-southeast-7.amazonaws.com/insights/adhoc https://securityhub.ca-central-1.amazonaws.com/insights/adhoc https://securityhub.ca-west-1.amazonaws.com/insights/adhoc https://securityhub.eu-central-1.amazonaws.com/insights/adhoc https://securityhub.eu-central-2.amazonaws.com/insights/adhoc https://securityhub.eu-north-1.amazonaws.com/insights/adhoc https://securityhub.eu-south-1.amazonaws.com/insights/adhoc https://securityhub.eu-south-2.amazonaws.com/insights/adhoc https://securityhub.eu-west-1.amazonaws.com/insights/adhoc https://securityhub.eu-west-2.amazonaws.com/insights/adhoc https://securityhub.eu-west-3.amazonaws.com/insights/adhoc https://securityhub.il-central-1.amazonaws.com/insights/adhoc https://securityhub.me-central-1.amazonaws.com/insights/adhoc https://securityhub.me-south-1.amazonaws.com/insights/adhoc https://securityhub.mx-central-1.amazonaws.com/insights/adhoc https://securityhub.sa-east-1.amazonaws.com/insights/adhoc https://securityhub.us-east-1.amazonaws.com/insights/adhoc https://securityhub.us-east-2.amazonaws.com/insights/adhoc https://securityhub.us-west-1.amazonaws.com/insights/adhoc https://securityhub.us-west-2.amazonaws.com/insights/adhoc https://doc-help-panel-test.aka.corp.amazon.com https://i-ec2-shiba-prod.bom.amazon.com https://ce.us-east-1.amazonaws.com https://health.us-east-1.amazonaws.com https://health.us-east-2.amazonaws.com https://ram.ap-south-1.amazonaws.com https://sts.ap-south-1.amazonaws.com https://ssm.ap-south-1.amazonaws.com https://securityhub.ap-south-1.amazonaws.com https://tagging.ap-south-1.amazonaws.com https://autoscaling.ap-south-1.amazonaws.com https://monitoring.ap-south-1.amazonaws.com https://lambda.ap-south-1.amazonaws.com https://elasticloadbalancing.ap-south-1.amazonaws.com https://resource-groups.ap-south-1.amazonaws.com https://synthetics.ap-south-1.amazonaws.com https://compute-optimizer.ap-south-1.amazonaws.com https://servicecatalog.ap-south-1.amazonaws.com https://config.ap-south-1.amazonaws.com https://iam.amazonaws.com https://resiliencehub.ap-south-1.amazonaws.com https://support.us-east-1.amazonaws.com/ https://us-west-2.prod.fes.console.api.aws https://us-east-1.prod.fes.console.api.aws https://*.prod.personalization.console.api.aws https://*.prod.p13n.console.aws.dev https://macie2.ap-south-1.amazonaws.com https://application-signals.ap-south-1.api.aws https://cost-optimization-hub.us-east-1.amazonaws.com https://a.b.cdn.console.awsstatic.com; font-src data: https://a.b.cdn.console.awsstatic.com; img-src data: https://d34478bzukvagl.cloudfront.net https://*.cdn.console.awsstatic.com https://ap-south-1.console.aws.amazon.com/p/pref/ https://assets.dataexchange.console.api.aws https://assets.marketplace.console.api.aws https://djfl9s9sd776a.cloudfront.net/ https://ap-south-1.console.aws.amazon.com/favicon.ico https://ap-south-1.console.aws.amazon.com/p/log/ https://a.b.cdn.console.awsstatic.com; script-src https://d34478bzukvagl.cloudfront.net/js/ https://*.cdn.console.awsstatic.com https://*.console.aws.amazon.com/api-proxy/ https://*.console.aws.amazon.com/api/ https://*.signin.aws.amazon.com/oauth https://*.signin.aws.amazon.com/sessions/v1/authorize https://ap-south-1.console.aws.amazon.com/p/pref/ https://cdn.1.as2.amazonaws.com/asset/ https://cdn.2.as2.amazonaws.com/asset/ https://cdn.assets.as2.amazonaws.com https://health.aws.amazon.com https://phd.aws.amazon.com https://signin.aws.amazon.com https://a.b.cdn.console.awsstatic.com 'nonce-fcyTSgAd+G8g+r20f3rZdg=='; style-src https://d34478bzukvagl.cloudfront.net/css/ https://*.cdn.console.awsstatic.com https://djfl9s9sd776a.cloudfront.net/css/ 'unsafe-inline' https://a.b.cdn.console.awsstatic.com; form-action https://ap-south-1.signin.aws.amazon.com/oauth https://ap-south-1.signin.aws.amazon.com/switchrole https://signin.aws.amazon.com/switchrole https://us-east-1.console.aws.amazon.com/feedback/submit-feedback https://ap-south-1.console.aws.amazon.com/console/; frame-src https://alchemist-widget-iso.widget.console.aws.amazon.com/ https://bowerbird.widget.console.aws.amazon.com/ https://cloudshell.widget.console.aws.amazon.com/ https://cloudwatch-console-investigations.widget.console.aws.amazon.com/ https://conversational-experience-worker.widget.console.aws.amazon.com/ https://global.console.aws.amazon.com/lotus/csp/@amzn/aws-ccx-regions-availability/1/ https://global.console.aws.amazon.com/lotus/csp/@amzn/aws-paddy-nav-widget/1/ https://global.console.aws.amazon.com/lotus/csp/@amzn/aws-unified-search/1/ https://global.console.aws.amazon.com/lotus/csp/@amzn/awsconsole-concierge-search-lotus/2/ https://global.console.aws.amazon.com/lotus/csp/@amzn/rmc-resource-exploration-lotus/1/ https://glue-sensei.widget.console.aws.amazon.com/ https://mobileappqrcode.widget.console.aws.amazon.com/ https://support-everywhere-chat.widget.console.aws.amazon.com/ https://support-everywhere-create-case.widget.console.aws.amazon.com/ https://tela-canvas.widget.console.aws.amazon.com/ https://unified-search-q.widget.console.aws.amazon.com/ https://us-east-1.console.aws.amazon.com/feedback/submit-feedback https://application-wizard.widget.console.aws.amazon.com/lotus/isolatedIFrame https://global.console.aws.amazon.com/lotus/csp/@amzn/rmc-resource-exploration-widget/1/ https://global.console.aws.amazon.com/lotus/csp/@amzn/rmc-resource-exploration-dashboard-widget/1/ https://global.console.aws.amazon.com/lotus/csp/@amzn/rmc-resource-exploration-module/1/ https://a.b.cdn.console.awsstatic.com;">
+  <title>AWS Management Console</title>
+  <link rel="preconnect" href="https://global.console.aws.amazon.com">
+<link rel="preconnect" href="https://a.b.cdn.console.awsstatic.com">
+  <meta name="awsc-session-data" content="{&#34;infrastructureRegion&#34;:&#34;ap-south-1&#34;,&#34;accountId&#34;:&#34;043309326599&#34;,&#34;sessionARN&#34;:&#34;arn:aws:iam::043309326599:root&#34;,&#34;sessionId&#34;:&#34;g1Dy38txJLfpAd-K2JntxudTl49kGuz0&#34;,&#34;identityToken&#34;:&#34;eyJ0eXAiOiJKV1MiLCJrZXlSZWdpb24iOiJ1cy1lYXN0LTEiLCJhbGciOiJFUzM4NCIsImtpZCI6IjQ1YzkxMTJjLTEwZDMtNDk5NS04NzI2LWQ5ZWQ3ODA0MjYzNSJ9.eyJzdWIiOiIiLCJzaWduaW5UeXBlIjoiUFVCTElDIiwiaXNzIjoiaHR0cHM6XC9cL3NpZ25pbi5hd3MuYW1hem9uLmNvbVwvc2lnbmluIiwia2V5YmFzZSI6Im1GWDhubXZkeStEUEhhXC9cLzhJcEJvTEFhd05GZEM4d0tBeGRmUVZ4MkRIND0iLCJhcm4iOiJhcm46YXdzOmlhbTo6MDQzMzA5MzI2NTk5OnJvb3QiLCJ1c2VybmFtZSI6IlJha2VzaGt1bWFyIn0.pKToMjTKctiX4pT_ibneVOLIWQoMNCLeDJYvXc_XnZGLLKEiAAWpTprLXmUWVwHLtVXtpc8jyP6evEdAvFQQP7fp7vNpgmXNG0MngGSaS2FG3FHQIR7p1qZJN26TY8bf&#34;,&#34;prismModeEnabled&#34;:false,&#34;dualstackEnabledDomain&#34;:false,&#34;displayName&#34;:&#34;Rakeshkumar&#34;}">
+  <meta name="tb-data" content="{&quot;cdn&quot;:&quot;https://a.b.cdn.console.awsstatic.com/&quot;,&quot;browserCredsFullPath&quot;:&quot;/console/tb/creds&quot;,&quot;csrfToken&quot;:&quot;eyJrZXlWZXJzaW9uIjoiMkwzUWpvUndoQUJCRXJ1NUdNdkxxQklkT1JrbnhkMnAiLCJ2YWx1ZSI6IkFWNVJTeXQya3p6MDdYNm95T0Nwc3lxekc0RlJ3Q0UxTUQwWFNCR1B1OVU9IiwidmVyc2lvbiI6MX0=&quot;,&quot;telemetry&quot;:{&quot;endpoint&quot;:&quot;https://cell-0.ap-south-1.prod.telemetry.console.api.aws/telemetry&quot;,&quot;fallbackEndpoint&quot;:&quot;https://telemetry.cell-0.ap-south-1.prod.tangerinebox.console.aws.a2z.com/telemetry&quot;,&quot;authToken&quot;:&quot;{\&quot;iv\&quot;:\&quot;SFstBuvGXG1B5WA8\&quot;,\&quot;message\&quot;:\&quot;CrprlRf/j26x0fJWoNTOoy+rk+vKZjzUZ/CiGKJopEm3LLyzgAbmFIdKJnH/2jCZqDDeoJGMw6quCLp/AAmOHr3OX19ODLxu510/ZqvFvjFx/nHq44dpsDDKsZobdmJ1i7JWgvE/J0UtVL1PtreoCLzFM0IavWS4GjbkVk0gNsXQvtSQPg6DWbU6d0md+irJV3f0VKD2IvNWQgXQ+2Gw1yTsdfrIV5uYDlhVa/FfkpIPptNbRAGvSnHtwcp5NVsn6qdDXmjn4n7oTUzyrj9M3meyNqki2ON+v1+XsiHtZpe+WGrdiNMGRNbTX1mqOy5nlPbf9OF47fAVZ0rSPqEe20c4zW2WuPlYQU9reCnpYY9uZv2e6L+ARJU0M40zc4jOmKJos0P229lf+R04egPimr55yjLq9A4ZOw==\&quot;,\&quot;keyVersion\&quot;:\&quot;2L3QjoRwhABBEru5GMvLqBIdORknxd2p\&quot;,\&quot;authTag\&quot;:\&quot;wHoilfT+a5paMihT8gz7qw==\&quot;,\&quot;version\&quot;:1}&quot;},&quot;nav2Enabled&quot;:false,&quot;showTangerineBoxMigrationOptOut&quot;:false,&quot;dualstackEnabledDomain&quot;:false,&quot;custom&quot;:{&quot;endpoint&quot;:&quot;https://api.ap-south-1.prod.tangerinebox.console.aws.a2z.com&quot;,&quot;unifiedHomeTangerineBoxAssetPath&quot;:&quot;a/v1/Y2KOPWW4HO57T326CSV4M4DE4CTTSWGZU4MIJ7KT3X4DZWJXZRLA&quot;,&quot;stage&quot;:&quot;prod&quot;,&quot;help_panel_api_service&quot;:&quot;https://global.help-panel.docs.aws.a2z.com&quot;,&quot;consoleCCSSettings&quot;:&quot;consoleHomeBYOTAnnouncementDismissedTimestamp,consoleHomeAppViewAnnouncementDismissedTimestamp,unifiedExperienceLastWidgetAnnouncementDismissedTimestamp,consoleHomeRTLegalNoticeDismissedTimestamp&quot;,&quot;ucafAppShellEnabled&quot;:&quot;true&quot;,&quot;bundleCoreModules&quot;:&quot;true&quot;,&quot;region&quot;:&quot;ap-south-1&quot;,&quot;consoleCCSDashboards&quot;:&quot;console-home-application-summary,console-home-unified&quot;,&quot;runtimeConnectorPluginsFeatureFlags&quot;:&quot;{\&quot;featureFlags\&quot;:{\&quot;messageAccessControl\&quot;:\&quot;true\&quot;},\&quot;isolatedRuntimeOverrides\&quot;:{\&quot;DEFAULT\&quot;:{\&quot;messageAccessControl\&quot;:\&quot;false\&quot;},\&quot;application-wizard\&quot;:{\&quot;messageAccessControl\&quot;:\&quot;true\&quot;}}}&quot;}}">
+  <meta name="tbt-data" content="{&quot;telemetryToken&quot;:&quot;v1/ba5be83d70d65c74006aba9009d7945eb694fd470d938013a410e3626b8853f9&quot;}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  <script nonce="fcyTSgAd+G8g+r20f3rZdg==">(function(){"use strict";class D{constructor(e){this.cb=e}notify(e){this.cb(e)}}class Y extends Error{constructor(e,t){super(e),this.message=e,this.originalError=t,this.name=this.constructor.name,t&&(this.stack+=`
+Caused by: `+t.stack)}}class G extends Y{constructor(e,t){super(e),this.message=e,this.metadata=t}}class oe extends Y{constructor(e,t){super(e),this.message=e,this.metadata=t}}class _e extends Y{}class J{queue=[];maxSize;comparator;constructor(e){this.comparator=e?.comparator,this.maxSize=e?.maxSize}get size(){return this.queue.length}get isEmpty(){return this.queue.length===0}add(...e){let t=[];return this.isAbleToFit(e.length)||(t=this.queue.splice(-e.length,this.queue.length-e.length)),this.queue.push(...e),this.prioritize(),{removedItems:t}}isAbleToFit(e){return this.maxSize===void 0||this.maxSize>=this.size+e}remove(e){const t=Math.min(this.queue.length,e);return this.queue.splice(0,t)}peek(){return this.queue[0]}prioritize(){this.comparator&&this.queue.sort(this.comparator)}}var I=(i=>(i.SERVICE="service",i.SERVICE_SUB_SECTION="serviceSubSection",i.SERVICE_CONSOLE_PAGE="serviceConsolePage",i.VARIANT="variant",i))(I||{});class Fe{constructor(e){this.window=e}isOnLoadListenerRegistered=!1;fallbackQueue=new J({maxSize:1e3});readCommonAttribute(e){if(!this.isPanoramaAvailable())throw new _e("Could not read attribute");const t=this.window?.panorama?.q?.trackerDictionary?.cf?.readCommonAttribute;if(t&&typeof t=="function")return t()[e]}executeWhenPanoramaAvailable(e){if(!this.isPanoramaAvailable()){this.enqueuePanoramaCall(e);return}e()}writeTelemetryMetric(e){const t=()=>this.window?.panorama("trackTelemetryMetrics",e);this.executeWhenPanoramaAvailable(t)}isPanoramaAvailable(){return typeof this.window<"u"&&typeof this.window?.panorama=="function"&&this.window?.panorama?.enabled}enqueuePanoramaCall(e){this.fallbackQueue.add(e),this.isOnLoadListenerRegistered||(this.window.addEventListener("onPanoramaLoad",t=>{t.detail&&t.detail.enabled&&this.flushFallbackQueue()}),this.isOnLoadListenerRegistered=!0)}flushFallbackQueue(){this.fallbackQueue.remove(this.fallbackQueue.size).forEach(t=>t())}}var $,b,L,re,A,se=-1,y=function(i){addEventListener("pageshow",function(e){e.persisted&&(se=e.timeStamp,i(e))},!0)},K=function(){var i=self.performance&&performance.getEntriesByType&&performance.getEntriesByType("navigation")[0];if(i&&i.responseStart>0&&i.responseStart<performance.now())return i},V=function(){var i=K();return i&&i.activationStart||0},h=function(i,e){var t=K(),n="navigate";return se>=0?n="back-forward-cache":t&&(document.prerendering||V()>0?n="prerender":document.wasDiscarded?n="restore":t.type&&(n=t.type.replace(/_/g,"-"))),{name:i,value:e===void 0?-1:e,rating:"good",delta:0,entries:[],id:"v4-".concat(Date.now(),"-").concat(Math.floor(8999999999999*Math.random())+1e12),navigationType:n}},C=function(i,e,t){try{if(PerformanceObserver.supportedEntryTypes.includes(i)){var n=new PerformanceObserver(function(a){Promise.resolve().then(function(){e(a.getEntries())})});return n.observe(Object.assign({type:i,buffered:!0},t||{})),n}}catch{}},p=function(i,e,t,n){var a,o;return function(r){e.value>=0&&(r||n)&&((o=e.value-(a||0))||a===void 0)&&(a=e.value,e.delta=o,e.rating=function(c,s){return c>s[1]?"poor":c>s[0]?"needs-improvement":"good"}(e.value,t),i(e))}},Z=function(i){requestAnimationFrame(function(){return requestAnimationFrame(function(){return i()})})},P=function(i){document.addEventListener("visibilitychange",function(){document.visibilityState==="hidden"&&i()})},W=function(i){var e=!1;return function(){e||(i(),e=!0)}},k=-1,ce=function(){return document.visibilityState!=="hidden"||document.prerendering?1/0:0},U=function(i){document.visibilityState==="hidden"&&k>-1&&(k=i.type==="visibilitychange"?i.timeStamp:0,ze())},le=function(){addEventListener("visibilitychange",U,!0),addEventListener("prerenderingchange",U,!0)},ze=function(){removeEventListener("visibilitychange",U,!0),removeEventListener("prerenderingchange",U,!0)},ee=function(){return k<0&&(k=ce(),le(),y(function(){setTimeout(function(){k=ce(),le()},0)})),{get firstHiddenTime(){return k}}},x=function(i){document.prerendering?addEventListener("prerenderingchange",function(){return i()},!0):i()},de=[1800,3e3],ue=function(i,e){e=e||{},x(function(){var t,n=ee(),a=h("FCP"),o=C("paint",function(r){r.forEach(function(c){c.name==="first-contentful-paint"&&(o.disconnect(),c.startTime<n.firstHiddenTime&&(a.value=Math.max(c.startTime-V(),0),a.entries.push(c),t(!0)))})});o&&(t=p(i,a,de,e.reportAllChanges),y(function(r){a=h("FCP"),t=p(i,a,de,e.reportAllChanges),Z(function(){a.value=performance.now()-r.timeStamp,t(!0)})}))})},me=[.1,.25],De=function(i,e){e=e||{},ue(W(function(){var t,n=h("CLS",0),a=0,o=[],r=function(s){s.forEach(function(l){if(!l.hadRecentInput){var d=o[0],u=o[o.length-1];a&&l.startTime-u.startTime<1e3&&l.startTime-d.startTime<5e3?(a+=l.value,o.push(l)):(a=l.value,o=[l])}}),a>n.value&&(n.value=a,n.entries=o,t())},c=C("layout-shift",r);c&&(t=p(i,n,me,e.reportAllChanges),P(function(){r(c.takeRecords()),t(!0)}),y(function(){a=0,n=h("CLS",0),t=p(i,n,me,e.reportAllChanges),Z(function(){return t()})}),setTimeout(t,0))}))},he=0,te=1/0,B=0,Ae=function(i){i.forEach(function(e){e.interactionId&&(te=Math.min(te,e.interactionId),B=Math.max(B,e.interactionId),he=B?(B-te)/7+1:0)})},pe=function(){return $?he:performance.interactionCount||0},Ve=function(){"interactionCount"in performance||$||($=C("event",Ae,{type:"event",buffered:!0,durationThreshold:0}))},f=[],H=new Map,fe=0,We=function(){var i=Math.min(f.length-1,Math.floor((pe()-fe)/50));return f[i]},Ue=[],Be=function(i){if(Ue.forEach(function(a){return a(i)}),i.interactionId||i.entryType==="first-input"){var e=f[f.length-1],t=H.get(i.interactionId);if(t||f.length<10||i.duration>e.latency){if(t)i.duration>t.latency?(t.entries=[i],t.latency=i.duration):i.duration===t.latency&&i.startTime===t.entries[0].startTime&&t.entries.push(i);else{var n={id:i.interactionId,latency:i.duration,entries:[i]};H.set(n.id,n),f.push(n)}f.sort(function(a,o){return o.latency-a.latency}),f.length>10&&f.splice(10).forEach(function(a){return H.delete(a.id)})}}},ge=function(i){var e=self.requestIdleCallback||self.setTimeout,t=-1;return i=W(i),document.visibilityState==="hidden"?i():(t=e(i),P(i)),t},be=[200,500],He=function(i,e){"PerformanceEventTiming"in self&&"interactionId"in PerformanceEventTiming.prototype&&(e=e||{},x(function(){var t;Ve();var n,a=h("INP"),o=function(c){ge(function(){c.forEach(Be);var s=We();s&&s.latency!==a.value&&(a.value=s.latency,a.entries=s.entries,n())})},r=C("event",o,{durationThreshold:(t=e.durationThreshold)!==null&&t!==void 0?t:40});n=p(i,a,be,e.reportAllChanges),r&&(r.observe({type:"first-input",buffered:!0}),P(function(){o(r.takeRecords()),n(!0)}),y(function(){fe=pe(),f.length=0,H.clear(),a=h("INP"),n=p(i,a,be,e.reportAllChanges)}))}))},ve=[2500,4e3],ne={},ye=function(i,e){e=e||{},x(function(){var t,n=ee(),a=h("LCP"),o=function(s){e.reportAllChanges||(s=s.slice(-1)),s.forEach(function(l){l.startTime<n.firstHiddenTime&&(a.value=Math.max(l.startTime-V(),0),a.entries=[l],t())})},r=C("largest-contentful-paint",o);if(r){t=p(i,a,ve,e.reportAllChanges);var c=W(function(){ne[a.id]||(o(r.takeRecords()),r.disconnect(),ne[a.id]=!0,t(!0))});["keydown","click"].forEach(function(s){addEventListener(s,function(){return ge(c)},{once:!0,capture:!0})}),P(c),y(function(s){a=h("LCP"),t=p(i,a,ve,e.reportAllChanges),Z(function(){a.value=performance.now()-s.timeStamp,ne[a.id]=!0,t(!0)})})}})},Te=[800,1800],qe=function i(e){document.prerendering?x(function(){return i(e)}):document.readyState!=="complete"?addEventListener("load",function(){return i(e)},!0):setTimeout(e,0)},Qe=function(i,e){e=e||{};var t=h("TTFB"),n=p(i,t,Te,e.reportAllChanges);qe(function(){var a=K();a&&(t.value=Math.max(a.responseStart-V(),0),t.entries=[a],n(!0),y(function(){t=h("TTFB",0),(n=p(i,t,Te,e.reportAllChanges))(!0)}))})},O={passive:!0,capture:!0},je=new Date,Ee=function(i,e){b||(b=e,L=i,re=new Date,Ce(removeEventListener),we())},we=function(){if(L>=0&&L<re-je){var i={entryType:"first-input",name:b.type,target:b.target,cancelable:b.cancelable,startTime:b.timeStamp,processingStart:b.timeStamp+L};A.forEach(function(e){e(i)}),A=[]}},Xe=function(i){if(i.cancelable){var e=(i.timeStamp>1e12?new Date:performance.now())-i.timeStamp;i.type=="pointerdown"?function(t,n){var a=function(){Ee(t,n),r()},o=function(){r()},r=function(){removeEventListener("pointerup",a,O),removeEventListener("pointercancel",o,O)};addEventListener("pointerup",a,O),addEventListener("pointercancel",o,O)}(e,i):Ee(e,i)}},Ce=function(i){["mousedown","keydown","touchstart","pointerdown"].forEach(function(e){return i(e,Xe,O)})},ke=[100,300],Ye=function(i,e){e=e||{},x(function(){var t,n=ee(),a=h("FID"),o=function(s){s.startTime<n.firstHiddenTime&&(a.value=s.processingStart-s.startTime,a.entries.push(s),t(!0))},r=function(s){s.forEach(o)},c=C("first-input",r);t=p(i,a,ke,e.reportAllChanges),c&&(P(W(function(){r(c.takeRecords()),c.disconnect()})),y(function(){var s;a=h("FID"),t=p(i,a,ke,e.reportAllChanges),A=[],L=-1,b=null,Ce(addEventListener),s=o,A.push(s),we()}))})};class Ge{constructor(e,t,n,a,o,r,c){this.window=e,this.telemetryToken=t,this.broker=n,this.panoramaMetricWriter=a,this.locationHandler=o,this.panoramaWrapper=r,this.telemetryTokensForPublicEvents=c,this.tenantId=this.broker.register({telemetryToken:this.telemetryToken,telemetryTokensForPublicEvents:this.telemetryTokensForPublicEvents,source:"page-inline-script"}),this.emitComponentReadyMetric=this.emitComponentReadyMetric.bind(this),this.visiblityChangeHandler=this.visiblityChangeHandler.bind(this),this.setup()}tenantId;isComponentReadyEmittedOnLoad=!1;locationChangeTime=this.now();visitedCloudscapeMarkers=new Set;cutOffTimer=3e4;transitionCutOffTimer=15e3;timerId;eventsToListen=["keydown","click","pagehide"];iFrameConsoleList=["cw","ec2","vpc","vpcconsole"];tableEvents=["tableRendered","tableUpdated"];buttonEvents=["primaryButtonRendered","primaryButtonUpdated"];suppressDistractions=new Set(["Reload","Sign out","Abmelden","다시 로드","再ロード","Reset","Redefinir","サインアウト","Erneut laden","Enviar","Recharger","Recarregar","Réinitialiser","Volver a cargar","Muat ulang","Ricarica","Yeniden yükle","重新加载","重新載入","Cerrar sesión","Déconnexion","Keluar","Esci","로그아웃","Sair","Oturumu kapat","退出","登出"]);frameMetricNames={tableReadinessTransition:"frameTransitionTimeToTableReady",buttonReadinessTransition:"frameTransitionTimeToButtonReady",tableReadiness:"frameTimeToTableReady",buttonReadiness:"frameTimeToButtonReady"};validFrameWebVitals={LCP:"iFrameLargestContentfulPaint",CrossFrameNavInteraction:"iFrameLargestContentfulPaint"};webVitalLCPValue;isFrameLCPEmitted=!1;now(){return typeof performance<"u"&&typeof performance.now=="function"?performance.now():Date.now()}logTimeToStartLoadingConsoleAsset(){try{if(this.window&&"PerformanceObserver"in this.window){const e=new PerformanceObserver(t=>{t.getEntries().forEach(a=>{const{name:o,startTime:r}=a;o==="timeToStartExecConsoleAsset"&&(this.broker.addEvent({tenantId:this.tenantId,event:{type:"custom-measure-metric",timestamp:new Date,version:"page_inline_script",content:{},customMeasureMetric:{name:"timeToStartLoadingConsoleAsset",timeToCustomMark:r}},publicEvent:!0}),e.disconnect())})});e.observe({type:"mark",buffered:!0})}}catch{}}emitComponentReadyMetric(){try{if(this.window&&this.window.performance&&typeof this.window.performance.getEntriesByType=="function"){const e=this.window.performance.getEntriesByType("mark"),t=this.getActivationStart()||0,n=this.extractMetricToReport(e);if(n.length){let a=!1;n.forEach(o=>{if(o?.startTime&&o?.componentName){const{startTime:r,componentIdentifier:c,componentName:s,componentSelector:l}=o;let d="timeToTableReady",u=r-t;if(this.isComponentReadyEmittedOnLoad?(u=r-this.locationChangeTime,d=s==="table"?"transitionTimeToTableReady":"transitionTimeToPrimaryButtonReady"):d=s==="table"?"timeToTableReady":"timeToPrimaryButtonReady",u>0)this.panoramaMetricWriter.writeComponentReadyMetric({name:d,value:u,componentEventName:s,componentIdentifier:c}),this.broker.addEvent({tenantId:this.tenantId,event:{type:"component-ready",timestamp:new Date,version:"page_inline_script",content:{},componentReady:{name:d,value:u,metadata:{name:s,identifier:c}}},publicEvent:!0}),a=!0;else if(l&&this.isComponentReadyEmittedOnLoad)try{document.querySelector(`[data-analytics-performance-mark="${l}"]`)&&(this.panoramaMetricWriter.writeComponentReadyMetric({name:d,value:0,componentEventName:s,componentIdentifier:c,originalMetricValue:u}),this.broker.addEvent({tenantId:this.tenantId,event:{type:"component-ready",timestamp:new Date,version:"page_inline_script",content:{},componentReady:{name:d,value:0,metadata:{name:s,identifier:c,originalMetricValue:u}}},publicEvent:!0}),a=!0)}catch{}}}),a&&(this.isComponentReadyEmittedOnLoad||this.locationHandler.addObserver(new D(o=>this.attachListenersOnLocationChange())),this.isComponentReadyEmittedOnLoad=!0)}}}catch{}finally{this.removeListenersForComponentReady()}}canExecuteComponentReady(e){this.window.document.prerendering?this.window.addEventListener("prerenderingchange",()=>e(),!0):e()}getActivationStart(){try{return this.window.performance&&this.window.performance.getEntriesByType&&this.window.performance.getEntriesByType("navigation")[0]&&this.window.performance.getEntriesByType("navigation")[0].activationStart||0}catch{return 0}}visiblityChangeHandler(){this.window.document.visibilityState==="hidden"&&this.emitComponentReadyMetric()}addListenersForComponentReady(){this.addOrRemoveListeners(!0)}removeListenersForComponentReady(){this.addOrRemoveListeners(!1)}addOrRemoveListeners(e=!0){e?(this.eventsToListen.forEach(t=>{this.window.addEventListener(t,this.emitComponentReadyMetric,!0)}),this.window.document.addEventListener("visibilitychange",this.visiblityChangeHandler),this.timerId=setTimeout(()=>this.emitComponentReadyMetric(),this.isComponentReadyEmittedOnLoad?this.transitionCutOffTimer:this.cutOffTimer)):(this.eventsToListen.forEach(t=>{this.window.removeEventListener(t,this.emitComponentReadyMetric,!0)}),this.window.document.removeEventListener("visibilitychange",this.visiblityChangeHandler),this.timerId&&clearTimeout(this.timerId))}attachListenersOnLocationChange(){this.locationChangeTime=this.now(),this.addListenersForComponentReady()}getNavigationStart(){return window.performance&&window.performance.timeOrigin?Math.round(performance.timeOrigin):window.performance.timing.navigationStart}getNavigationStartDelta(e){try{const t=e-this.getNavigationStart();return t>0?t:0}catch{return 0}}formattedFrameMetricName(e){const t=this.isComponentReadyEmittedOnLoad?`${e}Transition`:e;return this.frameMetricNames[t]}logWebVitalLCPValue({delta:e}){this.webVitalLCPValue=e}sendFrameComponentReadyEventToBroker({formattedMetricName:e,isCrossFrameNav:t,metricValue:n,name:a,id:o,src:r,delta:c,identifier:s,metricName:l,data:d,navigationStart:u}){this.broker.addEvent({tenantId:this.tenantId,event:{type:"frame-component-ready",timestamp:new Date,version:"page_inline_script",content:{},frameComponentReady:{name:e,value:t&&this.webVitalLCPValue?this.webVitalLCPValue:n,metadata:{name:a,id:o,src:r,duration:c,identifier:s,element:(l==="LCP"||t)&&d.frameMetaData.element?d.frameMetaData.element:"",navigationStart:u,locationChangeTime:this.locationChangeTime,crossFrameNavDelta:c,component:{name:a,identifier:s}}}},publicEvent:!0})}logFrameLCPMetric(e){const{frameMetaData:{id:t="",name:n="",identifier:a="",navigationStart:o=this.getNavigationStart(),src:r=""}={},metric:{delta:c,name:s}={}}=e;if(c&&s&&this.validFrameWebVitals[s]){let l=this.validFrameWebVitals[s],d=c;const u=s==="CrossFrameNavInteraction";s==="LCP"&&!this.isFrameLCPEmitted?(d+=this.getNavigationStartDelta(o),l=`PageLoad${this.validFrameWebVitals[s]}`,this.isFrameLCPEmitted=!0):u&&!this.isFrameLCPEmitted&&(d=this.webVitalLCPValue||0,l=`PageLoad${this.validFrameWebVitals.LCP}`,this.isFrameLCPEmitted=!0),(s==="LCP"||u)&&l.startsWith("PageLoad")&&this.webVitalLCPValue===void 0?setTimeout(()=>{this.webVitalLCPValue!==void 0&&this.sendFrameComponentReadyEventToBroker({formattedMetricName:l,isCrossFrameNav:u,metricValue:d,name:n,id:t,src:r,delta:c,identifier:a,metricName:s,data:e,navigationStart:o})},u?200:1e4):this.sendFrameComponentReadyEventToBroker({formattedMetricName:l,isCrossFrameNav:u,metricValue:d,name:n,id:t,src:r,delta:c,identifier:a,metricName:s,data:e,navigationStart:o})}}logFrameMetric(e){try{const{frameMetaData:{id:t="",name:n="",identifier:a="",navigationStart:o=this.getNavigationStart(),activationTime:r=0,src:c=""}={},metricList:s=[]}=e;let l=!1;s.length&&(s.forEach(d=>{const{startTime:u,name:M,componentStartTime:S=u,componentEventName:w="",componentIdentifier:g="",componentOnPage:X=!1}=d;if(u&&["buttonReadiness","tableReadiness"].includes(M)){const R=this.formattedFrameMetricName(M);let v=u;v+=this.getNavigationStartDelta(o),this.isComponentReadyEmittedOnLoad?v-=this.locationChangeTime:v-=r,v>0?(this.panoramaMetricWriter.writeFrameComponentReadyMetric({name:R,value:v,frameId:t,frameName:n,frameSrc:c,frameDuration:u,frameIdentifier:a,componentEventName:w,componentIdentifier:g,componentStartTime:S,navigationStart:o,locationChangeTime:this.locationChangeTime}),this.broker.addEvent({tenantId:this.tenantId,event:{type:"frame-component-ready",timestamp:new Date,version:"page_inline_script",content:{},frameComponentReady:{name:R,value:v,metadata:{name:n,id:t,src:c,duration:u,identifier:a,component:{name:w,identifier:g,startTime:S},navigationStart:o,locationChangeTime:this.locationChangeTime}}},publicEvent:!0}),l=!0):this.isComponentReadyEmittedOnLoad&&X&&(this.panoramaMetricWriter.writeFrameComponentReadyMetric({name:R,value:0,frameId:t,frameName:n,frameSrc:c,frameDuration:u,frameIdentifier:a,componentEventName:w,componentIdentifier:g,componentStartTime:S,navigationStart:o,locationChangeTime:this.locationChangeTime,originalMetricValue:v}),this.broker.addEvent({tenantId:this.tenantId,event:{type:"frame-component-ready",timestamp:new Date,version:"page_inline_script",content:{},frameComponentReady:{name:R,value:0,metadata:{name:n,id:t,src:c,duration:u,identifier:a,component:{name:w,identifier:g,startTime:S},navigationStart:o,locationChangeTime:this.locationChangeTime,originalMetricValue:v}}},publicEvent:!0}),l=!0)}}),l&&(this.isComponentReadyEmittedOnLoad||this.locationHandler.addObserver(new D(d=>this.attachListenersOnLocationChange())),this.isComponentReadyEmittedOnLoad=!0))}catch{}}setupFrameMessageListeners(){addEventListener("message",e=>{const{data:t}=e;t?.event_id==="iFrame_Panorama_ConsoleLatency"?this.logFrameMetric(t):t?.event_id==="iFrame_Panorama_WebVital"&&this.logFrameLCPMetric(t)})}setup(){if(this.window.performance){this.canExecuteComponentReady(()=>{this.addListenersForComponentReady()});try{this.panoramaWrapper.executeWhenPanoramaAvailable(()=>{const e=this.panoramaWrapper.readCommonAttribute(I.SERVICE);e&&this.iFrameConsoleList.includes(e)&&(this.setupFrameMessageListeners(),ye(t=>this.logWebVitalLCPValue(t))),this.logTimeToStartLoadingConsoleAsset()})}catch{}}}extractMetricToReport(e){const t=e.length,n=[];let a=null,o=null;for(let r=t-1;r>=0;r--){const{name:c,detail:s={}}=e[r],l=s?.text||s?.header||"",d=s?.instanceId||s?.instanceIdentifier;if(s?.source==="awsui"&&!s?.loading&&d&&!this.visitedCloudscapeMarkers.has(d)&&!this.suppressDistractions.has(l)&&(this.visitedCloudscapeMarkers.add(d),this.tableEvents.includes(c)&&!o?o=e[r]:this.buttonEvents.includes(c)&&!a&&(a=e[r]),o&&a))break}return o&&n.push({componentName:"table",startTime:o.startTime,componentIdentifier:o.detail.text||o.detail.header||"",componentSelector:o.detail?.instanceId||o.detail?.instanceIdentifier||""}),a&&n.push({componentName:"primaryButton",startTime:a.startTime,componentIdentifier:a.detail.text||a.detail.header||"",componentSelector:a.detail?.instanceId||a.detail?.instanceIdentifier||""}),n}}const Je=10;class $e{constructor(e,t,n){this.document=e,this.telemetryToken=t,this.broker=n;const a=this.broker.register({telemetryToken:this.telemetryToken,source:"page-inline-script"}),o=r=>{++this.numberOfReportedEvents>Je||this.broker.addEvent({tenantId:a,event:{type:"csp-violation",timestamp:new Date,version:"page_inline_script",content:{},cspViolation:{documentURI:r.documentURI||e.location.href,effectiveDirective:r.effectiveDirective||"unknown",originalPolicy:r.originalPolicy||"unknown",disposition:r.disposition||"enforce",statusCode:r.statusCode||200,blockedURI:r.blockedURI,sourceFile:r.sourceFile,sample:r.sample,lineNumber:r.lineNumber,columnNumber:r.columnNumber}}})};this.document.addEventListener("securitypolicyviolation",o)}numberOfReportedEvents=0}const Ke="1.0.3426.0#72bc95cf";function Me(i){return`Bearer ${i}`}function ae(i){return[i,`(broker: ${Ke})`].join(" ")}function Ze(i,e,t="<trimmed>"){if(i.length<=e)return i;const n=e-t.length;return`${i.slice(0,n)}${t}`}const et=["csp.hci.ic.gov","api.aws.hci.ic.gov","amazonaws.com.cn","api.amazonwebservices.com.cn","c2s.ic.gov","api.aws.ic.gov","amazonaws.com","api.aws","sc2s.sgov.gov","api.aws.scloud","cloud.adc-e.uk","api.cloud-aws.adc-e.uk","amazonaws.com","api.aws","amazonaws.eu","api.amazonwebservices.eu"],tt={"ap-southeast-6":{endpoint:"cell-0.ap-southeast-6.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-southeast-6.prod.tangerinebox.console.aws.a2z.com"},"us-isof-south-1":{endpoint:"telemetry.cell-0.us-isof-south-1.prod.tangerinebox.console.a2z.hci.ic.gov"},"us-iso-west-1":{endpoint:"telemetry.cell-0.us-iso-west-1.prod.tangerinebox.console.c2s-a2z.ic.gov"},"eu-north-1":{endpoint:"cell-0.eu-north-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.eu-north-1.prod.tangerinebox.console.aws.a2z.com"},"me-south-1":{endpoint:"cell-0.me-south-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.me-south-1.prod.tangerinebox.console.aws.a2z.com"},"cn-north-1":{endpoint:"telemetry.cell-0.cn-north-1.prod.tangerinebox.console.aws.a2z.org.cn"},"ap-southeast-7":{endpoint:"cell-0.ap-southeast-7.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-southeast-7.prod.tangerinebox.console.aws.a2z.com"},"ap-south-1":{endpoint:"cell-0.ap-south-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-south-1.prod.tangerinebox.console.aws.a2z.com"},"eu-west-3":{endpoint:"cell-0.eu-west-3.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.eu-west-3.prod.tangerinebox.console.aws.a2z.com"},"ap-southeast-3":{endpoint:"cell-0.ap-southeast-3.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-southeast-3.prod.tangerinebox.console.aws.a2z.com"},"us-east-2":{endpoint:"cell-0.us-east-2.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.us-east-2.prod.tangerinebox.console.aws.a2z.com"},"af-south-1":{endpoint:"cell-0.af-south-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.af-south-1.prod.tangerinebox.console.aws.a2z.com"},"us-iso-east-1":{endpoint:"telemetry.cell-0.us-iso-east-1.prod.tangerinebox.console.c2s-a2z.ic.gov"},"eu-west-1":{endpoint:"cell-0.eu-west-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.eu-west-1.prod.tangerinebox.console.aws.a2z.com"},"me-central-1":{endpoint:"cell-0.me-central-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.me-central-1.prod.tangerinebox.console.aws.a2z.com"},"us-isob-west-1":{endpoint:"telemetry.cell-0.us-isob-west-1.prod.tangerinebox.console.sc2s-a2z.sgov.gov"},"eu-central-1":{endpoint:"cell-0.eu-central-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.eu-central-1.prod.tangerinebox.console.aws.a2z.com"},"sa-east-1":{endpoint:"cell-0.sa-east-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.sa-east-1.prod.tangerinebox.console.aws.a2z.com"},"ap-east-1":{endpoint:"cell-0.ap-east-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-east-1.prod.tangerinebox.console.aws.a2z.com"},"ap-south-2":{endpoint:"cell-0.ap-south-2.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-south-2.prod.tangerinebox.console.aws.a2z.com"},"us-east-1":{endpoint:"cell-0.us-east-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.us-east-1.prod.tangerinebox.console.aws.a2z.com"},"ap-northeast-2":{endpoint:"cell-0.ap-northeast-2.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-northeast-2.prod.tangerinebox.console.aws.a2z.com"},"ap-northeast-3":{endpoint:"cell-0.ap-northeast-3.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-northeast-3.prod.tangerinebox.console.aws.a2z.com"},"ap-southeast-5":{endpoint:"cell-0.ap-southeast-5.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-southeast-5.prod.tangerinebox.console.aws.a2z.com"},"us-isob-east-1":{endpoint:"telemetry.cell-0.us-isob-east-1.prod.tangerinebox.console.sc2s-a2z.sgov.gov"},"eu-west-2":{endpoint:"cell-0.eu-west-2.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.eu-west-2.prod.tangerinebox.console.aws.a2z.com"},"us-isof-east-1":{endpoint:"telemetry.cell-0.us-isof-east-1.prod.tangerinebox.console.a2z.hci.ic.gov"},"us-northeast-1":{endpoint:"cell-0.us-northeast-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.us-northeast-1.prod.tangerinebox.console.aws.a2z.com"},"ap-southeast-4":{endpoint:"cell-0.ap-southeast-4.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-southeast-4.prod.tangerinebox.console.aws.a2z.com"},"eu-south-1":{endpoint:"cell-0.eu-south-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.eu-south-1.prod.tangerinebox.console.aws.a2z.com"},"eu-isoe-west-1":{endpoint:"telemetry.cell-0.eu-isoe-west-1.prod.tangerinebox.console.a2z.adc-e.uk"},"ap-northeast-1":{endpoint:"cell-0.ap-northeast-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-northeast-1.prod.tangerinebox.console.aws.a2z.com"},"us-gov-east-1":{endpoint:"telemetry.cell-0.us-gov-east-1.prod.tangerinebox.console.aws.a2z.com"},"us-gov-west-1":{endpoint:"telemetry.cell-0.us-gov-west-1.prod.tangerinebox.console.aws.a2z.com"},"us-west-2":{endpoint:"cell-0.us-west-2.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.us-west-2.prod.tangerinebox.console.aws.a2z.com"},"mx-central-1":{endpoint:"cell-0.mx-central-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.mx-central-1.prod.tangerinebox.console.aws.a2z.com"},"me-west-1":{endpoint:"cell-0.me-west-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.me-west-1.prod.tangerinebox.console.aws.a2z.com"},"sa-west-1":{endpoint:"cell-0.sa-west-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.sa-west-1.prod.tangerinebox.console.aws.a2z.com"},"us-west-1":{endpoint:"cell-0.us-west-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.us-west-1.prod.tangerinebox.console.aws.a2z.com"},"ap-southeast-1":{endpoint:"cell-0.ap-southeast-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-southeast-1.prod.tangerinebox.console.aws.a2z.com"},"ap-southeast-2":{endpoint:"cell-0.ap-southeast-2.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-southeast-2.prod.tangerinebox.console.aws.a2z.com"},"eusc-de-east-1":{endpoint:"telemetry.cell-0.eusc-de-east-1.prod.tangerinebox.console.a2z.eu"},"il-central-1":{endpoint:"cell-0.il-central-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.il-central-1.prod.tangerinebox.console.aws.a2z.com"},"ap-east-2":{endpoint:"cell-0.ap-east-2.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ap-east-2.prod.tangerinebox.console.aws.a2z.com"},"ca-central-1":{endpoint:"cell-0.ca-central-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ca-central-1.prod.tangerinebox.console.aws.a2z.com"},"ca-west-1":{endpoint:"cell-0.ca-west-1.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.ca-west-1.prod.tangerinebox.console.aws.a2z.com"},"eu-south-2":{endpoint:"cell-0.eu-south-2.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.eu-south-2.prod.tangerinebox.console.aws.a2z.com"},"cn-northwest-1":{endpoint:"telemetry.cell-0.cn-northwest-1.prod.tangerinebox.console.aws.a2z.org.cn"},"eu-central-2":{endpoint:"cell-0.eu-central-2.prod.telemetry.console.api.aws",fallbackEndpoint:"telemetry.cell-0.eu-central-2.prod.tangerinebox.console.aws.a2z.com"}},q=new Map(Object.entries(tt)),nt=et;var N={},Se;function at(){return Se||(Se=1,Object.defineProperty(N,"__esModule",{value:!0}),N.TELEMETRY_BROKER_PROPERTY_NAME=void 0,N.TELEMETRY_BROKER_PROPERTY_NAME="_internal_tb_telemetry_broker"),N}var it=at(),_={},Re;function ot(){return Re||(Re=1,Object.defineProperty(_,"__esModule",{value:!0}),_.MAX_URL_LENGTH=void 0,_.MAX_URL_LENGTH=4096),_}var rt=ot();const Ie="aws-userInfo-signed",Le="metrics-req-cat",st="awsc-session-data";class T{static metaDataProviderInstance;userInfoSignedCookieCache;sessionDataCache;metaTagContentCache;constructor(){this.metaTagContentCache=this.parseTangerineBoxMetaTag()}static getInstance(){return this.metaDataProviderInstance||(this.metaDataProviderInstance=new T),this.metaDataProviderInstance}getMetaTagContent(){return this.metaTagContentCache}getTelemetryConfig(){const e=this.getTelemetryEndpoint(),t=this.getTelemetryFallbackEndpoint();let n;const a=this.getSessionData()?.identityToken;if(a)n=Me(a);else{if(!this.userInfoSignedCookieCache&&(this.userInfoSignedCookieCache=this.parseCookie(Ie),!this.userInfoSignedCookieCache))throw new Error(`No '${Ie}' cookie.`);n=Me(this.userInfoSignedCookieCache)}return{endpoint:e,fallbackEndpoint:t,authHeader:n}}getSessionData(){return this.sessionDataCache||(this.sessionDataCache=this.parseSessionDataMetaTag()),this.sessionDataCache}getConsoleTelemetryToken(){const e=this.parseMetaTag("tbt-data");if(e)try{const t=JSON.parse(e).telemetryToken;return typeof t=="string"?t:void 0}catch{return}}getTelemetryEndpoint(){const t=this.getMetaTagContent()?.telemetry?.endpoint;if(typeof t=="string")return t;const n=Array.from(q.keys()),a=this.determineConsoleRegion(n);return`https://${q.get(a).endpoint}/telemetry`}getTelemetryFallbackEndpoint(){const t=this.getMetaTagContent()?.telemetry?.fallbackEndpoint;if(typeof t=="string")return t;const n=Array.from(q.keys()),a=this.determineConsoleRegion(n),o=q.get(a).fallbackEndpoint;if(o)return`https://${o}/telemetry`}determineConsoleRegion(e){const t=[()=>this.getSessionData()?.infrastructureRegion,()=>this.parseMetaTag("awsc-mezz-region"),()=>new URLSearchParams(window?.location?.search).get("region"),()=>window?.location?.hostname?.split(".")[0]];for(const n of t){const a=n();if(a&&e.includes(a))return a}throw new Error("Cannot determine region for telemetry endpoint.")}getTrackerEventContext(){const e=this.getMetaTagContent(),t=this.parseCookie(Le)||"customer",n=typeof window<"u"&&this.parseMetaTag("awsc-proxy-request-id")||"unknown",a=!!e?.nav2Enabled,o=Ze(typeof window<"u"?window.location.href:"nodejs",rt.MAX_URL_LENGTH);return{callerCategory:t,location:o,requestId:n,nav2Enabled:a,prismModeEnabled:!!this.getSessionData()?.prismModeEnabled,privateAccessEnabled:this.getSessionData()?.vpc!==void 0?!0:void 0,isDualstackDomain:!!this.getSessionData()?.dualstackEnabledDomain}}parseTangerineBoxMetaTag(){const e=this.parseMetaTag("tb-data");if(e)try{return JSON.parse(e)}catch{return}}parseSessionDataMetaTag(){const e=this.parseMetaTag(st);if(e)try{return JSON.parse(e)}catch{return}}parseMetaTag(e){const t=document.querySelector(`meta[name='${e}']`);if(t)return t.content}parseCookie(e,t=document.cookie){const n=t.match(`${e}=([^;]*)`);if(!(!n||!n[1]))return n[1]}}class F{constructor(e,t,n){this.window=e,this.telemetryToken=t,this.broker=n;const a=this.broker.register({telemetryToken:this.telemetryToken,source:"page-inline-script"}),o=r=>{if(!r||this.isDOMEvent(r)||this.isExtensionError(r.filename)||this.isErrorToIgnore(r.message)||this.isEvalErrorDueToCspViolation(r))return;const c=this.findErrorOriginInTenantTable(r),s=this.buildTrackerEventContent(r);c&&(s.errorOrigin=c),this.broker.addEvent({tenantId:a,event:{type:"unhandled-error",timestamp:new Date,version:"page_inline_script",content:s}})};this.window.addEventListener("error",o,!0)}static MAX_PAYLOAD_SIZE=64*1024;static MAX_EVENT_DETAIL_SIZE=F.MAX_PAYLOAD_SIZE*.75;static ERRORS_TO_IGNORE=["ResizeObserver loop limit exceeded","ResizeObserver loop completed with undelivered notifications.","Script error."];isDOMEvent(e){return e.constructor?.name==="Event"}isExtensionError(e){try{return e?/eval|debugger|[a-zA-Z]*-extension/i.test(e):!1}catch{return!1}}isErrorToIgnore(e){try{return e?F.ERRORS_TO_IGNORE.indexOf(e)>=0:!1}catch{return!1}}isEvalErrorDueToCspViolation(e){return e.error?.constructor?.name==="EvalError"&&["'unsafe-eval'","Content Security Policy","CSP"].some(t=>e.error?.message.indexOf(t)>=0)}buildTrackerEventContent(e){const t={};if(t.eventClass=e.constructor?.name??"unknown",e.detail){const n=JSON.stringify(e.detail);t.detail=n.slice(0,Math.min(n.length,F.MAX_EVENT_DETAIL_SIZE))}return e.message&&(t.message=e.message),e.filename&&(t.filename=e.filename),e.lineno&&(t.lineNumber=e.lineno),e.colno&&(t.columnNumber=e.colno),e.error&&e.error.stack&&(t.stack=e.error.stack),e.target&&e.target.tagName&&(t.tagName=e.target.tagName),t}findErrorOriginInTenantTable(e){const t=this.extractUrlsFromError(e),n=this.broker.getTenants?.();if(n){for(const a of t)for(const o of n.tenants)if(o.assetsLocations?.some(r=>a.includes(r)))return o.name}}extractUrlsFromError(e){const t=[];if(e.filename&&t.push(e.filename),e.error?.stack){const n=e.error.stack.match(/https?:\/\/[^\s)]+/g);n&&t.push(...n)}return t}}class ct{constructor(e){this.window=e,this.currentLocation=this.window.location.pathname+(this.window.location.hash||""),this.window.onpopstate?this.window.addEventListener("popstate",()=>this.handle()):this.window.addEventListener("hashchange",()=>this.handle()),this.addPushStateListener()}currentLocation;observers=[];addObserver(e){this.observers.push(e)}handle(){const e=this.window.location.pathname+(this.window.location.hash||"");e!==this.currentLocation&&(this.observers.forEach(t=>t.notify({newLocation:e,oldLocation:this.currentLocation})),this.currentLocation=e)}addPushStateListener(){const e=this.window.history.pushState;this.window.history.pushState=(...t)=>{const n=e.apply(this.window.history,t);try{this.handle()}catch{}return n}}}const Q={CLS:"cumulativeLayoutShift",FCP:"firstContentfulPaint",FID:"firstInputDelay",LCP:"largestContentfulPaint",TTFB:"timeToFirstByte",INP:"interactionToNextPaint"};class lt{constructor(e){this.panoramaWrapper=e}writeLcp(e){let t="";e.entries.forEach(({startTime:n,element:a})=>{n===e.delta&&a&&(t=JSON.stringify({elementType:a.tagName,elementIdentifier:a.id,elementText:a.textContent?a.textContent.substring(0,50):""}))}),this.writeMetric({metricName:Q[e.name],metricValue:e.value,metricUnit:"Milliseconds",metricDetails:t})}writeCls(e){this.writeMetric({metricName:Q[e.name],metricValue:e.value*1e3,metricUnit:void 0,metricDetails:""})}writeInp(e){const t=[];e.entries.forEach(({entryType:n,duration:a,name:o,target:r})=>{t.push({entryType:n,duration:a,entryName:o,targetText:r?.textContent?r.textContent.substring(0,50):""})}),this.writeMetric({metricName:Q[e.name],metricValue:e.value,metricUnit:"Milliseconds",metricDetails:JSON.stringify(t)})}writeGenericWebvitalMetric(e){this.writeMetric({metricName:Q[e.name],metricValue:e.value,metricUnit:"Milliseconds",metricDetails:""})}writeComponentReadyMetric(e){this.writeMetric({metricName:e.name,metricValue:e.value,metricUnit:"Milliseconds",metricDetails:JSON.stringify({componentEventName:e.componentEventName,componentIdentifier:e.componentIdentifier,originalMetricValue:e.originalMetricValue})})}writeFrameComponentReadyMetric(e){this.writeMetric({metricName:e.name,metricValue:e.value,metricUnit:"Milliseconds",metricDetails:JSON.stringify({frameId:e.frameId,frameName:e.frameName,frameSrc:e.frameSrc,frameDuration:e.frameDuration,frameIdentifier:e.frameIdentifier,componentEventName:e.componentEventName,componentIdentifier:e.componentIdentifier,componentStartTime:e.componentStartTime,navigationStart:e.navigationStart,locationChangeTime:e.locationChangeTime,originalMetricValue:e.originalMetricValue})})}writeMetric(e){try{this.panoramaWrapper.writeTelemetryMetric({...e,timestamp:new Date().getTime()})}catch{}}}const dt=nt.map(i=>i.replace(/\./g,"\\.")).join("|"),ut=new RegExp(`^https://polly\\.[a-z0-9-]+\\.(${dt})/v1/speech\\?`),mt=i=>!i.includes("/p/log/")&&!i.includes("panoramaroute")&&!i.includes("telemetry")&&!i.startsWith("data:")&&!i.startsWith("blob:")&&!i.match(ut);class ht{constructor(e,t,n,a){this.telemetryToken=e,this.broker=t,this.panoramaMetricWriter=n,this.telemetryTokensForPublicEvents=a,this.tenantId=this.broker.register({telemetryToken:this.telemetryToken,telemetryTokensForPublicEvents:this.telemetryTokensForPublicEvents,source:"page-inline-script"}),this.broker.addRegistrationObserver(new D(o=>this.flushFallbackQueue(o))),this.emitWebVitalsMetrics(),this.emitPerformanceMetrics(["resource","navigation","measure"],o=>this.processPerformanceMetrics(o))}tenantId;fallbackQueue=new J({maxSize:1e3});isNewWebLibRegistered=!1;emitWebVitalsMetrics(){De(e=>{this.processWebVitalsMetrics(e),this.panoramaMetricWriter.writeCls(e)}),ue(e=>{this.processWebVitalsMetrics(e),this.panoramaMetricWriter.writeGenericWebvitalMetric(e)}),ye(e=>{this.processPageEvent(e),this.processWebVitalsMetrics(e),this.panoramaMetricWriter.writeLcp(e)}),Ye(e=>{this.processWebVitalsMetrics(e),this.panoramaMetricWriter.writeGenericWebvitalMetric(e)}),Qe(e=>{this.processWebVitalsMetrics(e),this.panoramaMetricWriter.writeGenericWebvitalMetric(e)}),He(e=>{this.processWebVitalsMetrics(e),this.panoramaMetricWriter.writeInp(e)})}processWebVitalsMetrics(e){this.broker.addEvent({tenantId:this.tenantId,event:{type:"web-vitals-metric",timestamp:new Date,version:"page_inline_script",content:{},webVitalsMetric:{name:e.name,value:e.value}},publicEvent:!0})}emitPerformanceMetrics(e,t){if(window&&"PerformanceObserver"in window){const n=new PerformanceObserver(t);try{e.forEach(a=>n.observe({type:a,buffered:!0}))}catch{n.observe({entryTypes:e})}}}processCustomMeasureMetrics(e){e.name.length>0&&e.name.match("^[A-Za-z]")&&this.enqueue({tenantId:this.tenantId,event:{type:"custom-measure-metric",timestamp:new Date,version:"page_inline_script",content:{},customMeasureMetric:{name:e.name,timeToCustomMark:e.duration}}})}processNavigationMetrics(e){e.loadEventEnd&&this.enqueue({tenantId:this.tenantId,event:{type:"navigation-metric",timestamp:new Date,version:"page_inline_script",content:{},navigationMetric:{startTime:e.startTime,duration:e.duration,initiatorType:e.initiatorType,domComplete:e.domComplete,domContentLoadedEventEnd:e.domContentLoadedEventEnd,domContentLoadedEventStart:e.domContentLoadedEventStart,domInteractive:e.domInteractive,loadEventEnd:e.loadEventEnd,loadEventStart:e.loadEventStart,redirectCount:e.redirectCount,redirectStart:e.redirectStart,requestStart:e.requestStart,responseStart:e.responseStart,type:e.type,unloadEventEnd:e.unloadEventEnd,unloadEventStart:e.unloadEventStart}},publicEvent:!0})}processPageEvent(e){let t;e.entries.forEach(({startTime:n,element:a})=>{n===e.delta&&a&&(t={type:a.tagName,identifier:a.id,text:a.textContent?a.textContent.substring(0,50):void 0})}),this.enqueue({tenantId:this.tenantId,event:{type:"page-metric",timestamp:new Date,version:"page_inline_script",content:{},pageMetric:{timeToLoadLargestContentfulPaint:e.value,elementMetadata:t}},publicEvent:!0})}processResourceMetrics(e){if(mt(e.name)){const t=(()=>{const n=e.responseStatus;if(Number.isInteger(n))return n})();this.enqueue({tenantId:this.tenantId,event:{type:"resource-metric",timestamp:new Date,version:"page_inline_script",content:{},resourceMetric:{url:e.name,startTime:e.startTime,duration:e.duration,initiatorType:e.initiatorType,nextHopProtocol:e.nextHopProtocol,fetchStart:e.fetchStart,domainLookupStart:e.domainLookupStart,domainLookupEnd:e.domainLookupEnd,connectStart:e.connectStart,connectEnd:e.connectEnd,requestStart:e.requestStart,responseStart:e.responseStart,responseStatus:t,responseEnd:e.responseEnd,transferSize:e.transferSize,encodedBodySize:e.encodedBodySize,decodedBodySize:e.decodedBodySize}},publicEvent:!0})}}isMeasureEntry(e){return e.entryType==="measure"}isNavigationEntry(e){return e.entryType==="navigation"}isResourceEntry(e){return e.entryType==="resource"}processPerformanceMetrics(e){for(const t of e.getEntries())this.isMeasureEntry(t)?this.processCustomMeasureMetrics(t):this.isNavigationEntry(t)?this.processNavigationMetrics(t):this.isResourceEntry(t)&&this.processResourceMetrics(t)}enqueue(e){this.isNewWebLibRegistered?this.broker.addEvent(e):this.fallbackQueue.add(e)}flushFallbackQueue(e){this.isNewWebLibRegistered||this.telemetryToken===e.telemetryToken&&(e.source==="weblib-v1"||e.source==="weblib-v2")&&(this.fallbackQueue.remove(this.fallbackQueue.size).forEach(n=>this.broker.addEvent(n)),this.isNewWebLibRegistered=!0)}}const ie=4,pt=(i,e)=>e===429?100*Math.random()+Math.min(10,2**i)*50:Math.random()*Math.min(10,2**i)*100,ft=i=>new Promise(e=>setTimeout(e,i)),gt=i=>i>=500||i===429;class bt{constructor(e){this.jsonReplacer=e}async call(e){const t=new Date;let n;for(let a=0;a<=(e.maxRetries??ie);a++){a&&await ft(pt(a,n));try{const o=await this.callWithFetch(e,a);if(n=o.status,!gt(o.status))return{finalHttpStatusCode:o.status,data:o.data,retries:a,startTimestamp:t,latencyMillseconds:new Date().getTime()-t.getTime(),maxRetriesExceeded:!1}}catch(o){if(n=500,a>=(e.maxRetries??ie)&&o instanceof Error)throw new G(o.message,{finalHttpStatusCode:500,retries:a,code:o.metadata.code,startTimestamp:t,latencyMillseconds:new Date().getTime()-t.getTime(),maxRetriesExceeded:!0})}}throw new G("Too many retries",{finalHttpStatusCode:500,retries:e.maxRetries??ie,startTimestamp:t,code:"MaxRetriesExceeded",latencyMillseconds:new Date().getTime()-t.getTime(),maxRetriesExceeded:!0})}async callWithFetch(e,t){const n={method:e.method,headers:{"X-Retries":`${t}`,...e.headers},keepalive:e.keepalive??!1};if(e.timeout!==void 0&&e.timeout>0){const a=new AbortController;setTimeout(()=>a.abort(),e.timeout+t*(e.timeoutIncreasePerRetry||0)),n.signal=a.signal}e.method.toUpperCase()!=="GET"&&(n.body=this.createBody(e));try{const a=await fetch(e.url,n),o=a?.headers?.get("Content-Type");return o&&/application\/json/.test(o)?{data:await a.json(),retries:t,status:a.status}:{data:await a.text(),retries:t,status:a.status}}catch(a){throw a instanceof Error&&a.name==="AbortError"?new oe("Request timeout",{code:"RequestTimeout",finalHttpStatusCode:500,retries:t}):new oe("Request encountered an error",{code:"RequestFailed",finalHttpStatusCode:500,retries:t})}}createBody(e){const t=e.data;return t?typeof t=="string"?t:typeof t=="object"?JSON.stringify(t,this.jsonReplacer):String(t):null}}class vt{tenantThrottledEvents=new Map;fallbackEndpointUsed=!1;fallbackEndpointUsageReported=!1;registerFallbackEndpointUsage(){this.fallbackEndpointUsed=!0}registerThrottledEvent(e,t,n){const a=n?.dryrun===!0?"DRYRUN":void 0,o=1;this.tenantThrottledEvents.has(e)||this.tenantThrottledEvents.set(e,[]);const r=this.tenantThrottledEvents.get(e),c=r.find(s=>s.reason===a&&s.location===t.location&&s.subSection===t.subSection&&s.page===t.page);c!==void 0?c.count+=o:r.push({reason:a,count:o,location:t.location,subSection:t.subSection,page:t.page})}getTelemetryMonitoringAndReset(e,t){if(e<=0)return[];const n=Array.from(this.tenantThrottledEvents.entries()).slice(0,e);n.forEach(([o])=>this.tenantThrottledEvents.delete(o));const a=n.map(([o,r])=>({telemetryToken:o,telemetryMonitoring:{throttledEvents:r}}));return this.fallbackEndpointUsed===!0&&this.fallbackEndpointUsageReported===!1&&(n.length>0?a[0].telemetryMonitoring.isFallbackDomain=!0:t&&a.push({telemetryToken:t,telemetryMonitoring:{isFallbackDomain:!0}}),this.fallbackEndpointUsageReported=!0),a}}const yt=new Set(["v1/1a93d4c56f678defa26efcfb135a2cf221390dded6f9a8c7c4976f03426a4f82","v1/889adc6dc0187cc7369200e353aed51a7df71e5ace4e5dd6fb0175b9cff0f579","v1/9b60dcc9c6e4dd4163da69a3059a00a447600f5ceb78fc5d7fbde6f3a0642e6c","v1/ec730d2854cf3febd9a995a68ee0b8487ccb960ea0ea5fed5a7233e9a280e651","v1/d448283574b951cc6b799c6ca97b6fb8b5dda45af34ba06eec639416e89a2c5b","v1/d410171a5ec2008bce09559b1f1c9af93629e4a377582852d45c206a55a49c09","v1/eea59e708802fbe70f4ac8c417f549d7b9a13ca2d02e2ea3ee2126534bc530be","v1/120ef1f00eef07923c2fb30104e3cfb5fe90869872d941dc834e49ee4419f27b","v1/fecf21d826671c86a5f14686f294a84375b7ed7eaca56ec8121110aa294b030f","v1/34890f8172e105306673231fa57118e546e2034989e2e1faf97623af1e56e7fe","v1/1909ee21a1d07d40fe819279f5df9ebf9a231810ea24a4ca1c258ac5dc64254c","v1/564f249ab7a2ad6c30435f579254261ea908d6baadbada797fa337e50d45d4b4","v1/d367fcbfbf4a051b74b67ce7dcbf57406cba8b555894d18a67f73785e79e1e2a","v1/f0492a82af5a54a48a1f657a5d12e2f02d977504f46d910fa5d8210a8e3d50f5","v1/892bb4b825f11b691c59605b361293c4a7af6454e6bb0ba7a09d04f2b9adb8a7","v1/54d5237cec2d9e026fcdc0e2bb1e3fa36f64a44341c459ea63f9cdb0357656b5","v1/f2233f30461cd26b5441228ee9bccd5d1679c935b03f4c063a0d6e26f5087f1d","v1/847de731d98b4355ac80535db8c44f639af6d01270815d6f4496ed2f968f0904","v1/de293f63dc39853b543108889c071f81696b9c86f5692ad66a51e567c1a985f7","v1/3033402b7daf723d88fe8c06229d1bde11f45caf2465358ee2879e6f7daad846","v1/21f12f475b6c6603c1dc41e044e83f64a016f02fa76022fa0a77efb109a1537a","v1/d695f51749c4d84b385f8d934510c0f6064188afe8f25778d516a9cf82378a08","v1/ef8a33b0e6fbfdfa7f1baf00f18214ab9150fd7fa557bcf864268b70fc283aff","v1/65565bde9e2c466ce0712b0aeabc89f63912cea39a6f9352427984ca9f77b4ac","v1/fbaa02fa5a53774b0f58a51ca70b1a32bddd04355cecec51bf5053a707d65e53","v1/d6671e158f6aae4749f34896a0d80caf616ab89dbb5e1cc944525ba0543828b1","v1/20a15323f0c0a67e18e9450f1572ce941aad5ca8643c473bb518baa9d4aa3e32","v1/3f7c31c118f9b8c267dff9fdfeeb2fab6e219601df8c953447ffb0603f68cf33","v1/8150687fe91bdaa032ba66af2aec6a3499329a28b11f471b67dca0a383b9ed0d","v1/f7dcb903f9769ea29417a041e4a157157bea4231deabc5a093ce2b8dd84afa5d","v1/a1d8a990d72db15817792a0c16e7fbeb8076a4a73a1960280419b8b69e9082b9","v1/511994f625757efe03a9231b61acd3e7f399bdeece7fca523e7db8b2169192af","v1/728bb2f84aa83a2c7f1cc3de1cf04ebcb0c32767bd14ce65575368e569f8894d","v1/c6806824480e9d128be0d1b9e38d12eb84bf8fb866e956576e603a8b3b125e49","v1/f2c07f9fce409923c6e20a27cce26b3dcfb6778f7b7aa5224fce93cb74a9c05b","v1/36e6e227ccc20e19f59cdcc31df08371a9cb4a5a515e8dd76436ef72bf8d9b11","v1/84e1b15ce4e697ace7ccd3a7aa2ea1ac7f9f95d0101bc22f15dd20b05e77fe61"]),Tt=i=>yt.has(i),Et=64*1024,wt=512*1024,Ct=100,kt=1e4,Mt=1e3,St=new Set(["[object Error]","[object DOMException]"]);function Pe(i,e){const t=i.timestamp.getTime(),n=e.timestamp.getTime();return t===n?0:t<n?-1:1}function Rt(i,e){return i.type==="error"&&e.type==="error"?Pe(i,e):i.type==="error"?-1:e.type==="error"?1:Pe(i,e)}class E{constructor(e,t,n,a,o=new bt(E.errorReplacer)){this.dataParser=t,this.panoramaWrapper=n,this.tenantTableManager=a,this.httpClient=o,this.defaultEndpoint=e.endpoint,this.fallbackEndpoint=e.fallbackEndpoint,this.authorizationHeader=e.authorizationHeader,this.maxEventsInChunk=e?.maxEventsInChunk??Ct,this.maxPayloadSizePerChunk=e?.maxPayloadSizePerChunk??wt,this.maxQueueSize=e?.maxQueueSize??kt}defaultEndpoint;fallbackEndpoint;authorizationHeader;maxEventsInChunk;maxPayloadSizePerChunk;maxQueueSize;tenantQueueMap=new Map;tenantDryrunQueueMap=new Map;telemetryMonitor=new vt;consoleTenantsEvents=new Map;tenantQueueToStartRemoving=void 0;identityTokenExpired=!1;shouldUseFallbackEndpoint=!1;firstTelemetryToken;getOrCreateQueueForTenant(e,t){const n=this.tenantQueueMap.get(e);if(n===void 0){const a=new J({comparator:(o,r)=>Rt(o.event,r.event),maxSize:Tt(t)?this.maxQueueSize/4:this.maxQueueSize});return this.tenantQueueMap.set(e,a),this.tenantDryrunQueueMap.set(e,0),a}else return n}get queueSize(){return Array.from(this.tenantQueueMap.values()).map(t=>t.size).reduce((t,n)=>t+n)}hasEvents(){return Array.from(this.tenantQueueMap.values()).some(t=>!t.isEmpty)}addEventContext(e,t){let n={...e,...this.dataParser.getTrackerEventContext()};const a=this.tenantTableManager.getCurrentHash(),o=this.dataParser.getConsoleTelemetryToken();a&&t[0]===o&&(n.tenantsHash=a);try{n=this.addPanoramaTagging(n)}catch{}return n}addEvent(e,t,n){this.firstTelemetryToken||(this.firstTelemetryToken=n[0]);const a=this.addEventContext(t,n),o=this.getOrCreateQueueForTenant(e,n[0]),{removedItems:r}=o.add({event:a,telemetryTokens:n});if(a.tenantsHash){const s=this.tenantTableManager.getTenantTable();this.registerConsoleTenantsEvent(n[0],a.tenantsHash,s.tenants)}r.forEach(s=>{const l=s.telemetryTokens[0];this.telemetryMonitor.registerThrottledEvent(l,s.event)});const c=this.tenantDryrunQueueMap.get(e);if(c>=Mt){const s=n[0];this.telemetryMonitor.registerThrottledEvent(s,{location:"n/a"},{dryrun:!0})}else this.tenantDryrunQueueMap.set(e,c+1)}publish(e,t,n=!1,a=!1){const{events:o,tokens:r}=this.getEventsToPublish(this.maxEventsInChunk,n?Et:this.maxPayloadSizePerChunk);if(o.length===0)e();else{const c={events:o,tokens:r};this.sendChunk(c,e,t,n,a)}}getEventsToPublish(e,t){const n=Math.floor(e/4),{tokens:a,events:o}=this.getTelemetryMonitoringEventsToPublish(n),r=Math.floor(e/4);this.addConsoleTenantsEventsToPublish(o,a,r,t);const c=Array.from(this.tenantQueueMap.entries());if(this.tenantQueueToStartRemoving!==void 0){const l=c.findIndex(([d])=>d===this.tenantQueueToStartRemoving);c.push(...c.splice(0,l))}let s;for(;c.length>0;){const[l,d]=c.shift();if(o.length===e){s=s??l;break}if(d.isEmpty)continue;const{event:u,telemetryTokens:M}=d.peek(),S=a.length,w={...u,tokenRefs:M.map(g=>{const X=a.findIndex(R=>R===g);return X===-1?(a.push(g),a.length-1):X})};if(o.length===0||JSON.stringify({events:o.concat(w)}).length<=t){o.push(w),d.remove(1),c.push([l,d]);const g=this.tenantDryrunQueueMap.get(l);g>0&&this.tenantDryrunQueueMap.set(l,g-1)}else s=s??l,a.splice(S)}return this.tenantQueueToStartRemoving=s,{events:o,tokens:a}}getTelemetryMonitoringEventsToPublish(e){const t=this.telemetryMonitor.getTelemetryMonitoringAndReset(e,this.firstTelemetryToken),n=t.map(({telemetryToken:o})=>o),a=t.map(({telemetryToken:o,telemetryMonitoring:r})=>({type:"telemetry-monitoring",timestamp:new Date,version:ae("page_inline_script"),content:{},telemetryMonitoring:r,...this.dataParser.getTrackerEventContext(),location:"various",tokenRefs:[n.findIndex(c=>c===o)]}));return{tokens:n,events:a}}registerConsoleTenantsEvent(e,t,n){this.consoleTenantsEvents.has(e)||this.consoleTenantsEvents.set(e,[]);const a=this.consoleTenantsEvents.get(e);a.find(r=>r.tenantsHash===t)||a.push({tenantsHash:t,consoleTenants:n,eventSent:!1})}addConsoleTenantsEventsToPublish(e,t,n,a){let o=0;for(const[r,c]of this.consoleTenantsEvents){let s=t.findIndex(l=>l===r);s===-1&&(t.push(r),s=t.length-1);for(const l of c){if(o>=n)break;if(l.eventSent)continue;const d={type:"console-tenants",timestamp:new Date,version:ae("page_inline_script"),content:{},tenantsHash:l.tenantsHash,consoleTenants:{tenants:l.consoleTenants},...this.dataParser.getTrackerEventContext(),tokenRefs:[s]};JSON.stringify({events:e.concat(d)}).length<=a&&(e.push(d),l.eventSent=!0,o++)}}}flush(e){this.hasEvents()&&this.publish(()=>this.flush(e),()=>this.flush(e),!0,e.initiatedByBeforeUnload?"beforeunload-flushed":"dangerously-flushed")}sendChunk(e,t,n,a=!1,o){if(this.identityTokenExpired){t();return}const r=(()=>{switch(o){case!1:return"scheduled";case"beforeunload-flushed":return"flushed";default:return o}})(),c=this.shouldUseFallbackEndpoint&&this.fallbackEndpoint?{default:this.fallbackEndpoint,fallback:void 0}:{default:this.defaultEndpoint,fallback:this.fallbackEndpoint},s={timeout:3e4,method:"POST",headers:{Authorization:this.authorizationHeader,"Content-Type":"application/json","X-Remaining-Events":this.queueSize.toString(),"X-Publish-Type":r},url:c.default,data:e,keepalive:a};this.callWithFallbackRetry(s,c.fallback,t,n)}callWithFallbackRetry(e,t,n,a){this.httpClient.call(e).then(o=>{if(o.finalHttpStatusCode===403&&!E.isResponseMessageFromApiGateway(o)&&t)return this.shouldUseFallbackEndpoint=!0,this.telemetryMonitor.registerFallbackEndpointUsage(),this.callWithFallbackRetry({...e,url:t},void 0,n,a);o.finalHttpStatusCode===401&&(this.identityTokenExpired=!0,console.warn("[TangerineBox] Identity token expired. Skip sending telemetry requests.")),n()}).catch(o=>{if(o instanceof G&&t)return this.shouldUseFallbackEndpoint=!0,this.telemetryMonitor.registerFallbackEndpointUsage(),this.callWithFallbackRetry({...e,url:t},void 0,n,a);a()})}static isResponseMessageFromApiGateway(e){return e.data&&typeof e.data=="object"&&"message"in e.data&&typeof e.data.message=="string"?e.data.message.includes("User is not authorized to access this resource with an explicit deny"):!1}static errorReplacer(e,t){if(t instanceof ErrorEvent){const n={};return t.message&&(n.message=t.message),t.filename&&(n.filename=t.filename),t.lineno&&(n.lineNumber=t.lineno),t.colno&&(n.columnNumber=t.colno),t.error&&t.error.stack&&(n.stack=t.error.stack),n}else if(t instanceof Error||E.isError(t)){const n={};return Object.getOwnPropertyNames(t).forEach(a=>{n[a]=t[a]}),t.stack&&(n.stack=t.stack),n}return t}static isError(e){const t=Object.prototype.toString.call(e);return!!(St.has(t)||E.isFieldStringAndNotEnumerable(e,"message")&&E.isFieldStringAndNotEnumerable(e,"name"))}static isFieldStringAndNotEnumerable(e,t){return e&&typeof e[t]=="string"?!Object.getOwnPropertyDescriptor(e,t)?.enumerable:!1}addPanoramaTagging(e){const t=this.panoramaWrapper.readCommonAttribute(I.SERVICE_SUB_SECTION),n=this.panoramaWrapper.readCommonAttribute(I.SERVICE_CONSOLE_PAGE),a=this.panoramaWrapper.readCommonAttribute(I.SERVICE);return{...e,subSection:t||void 0,page:n||void 0,panoramaServiceId:a||void 0}}}const xe=2e3,It=1e3,Lt=500;class Pt{constructor(e,t,n){this.eventPublisher=e,this.tenantRegister=t,this.consoleTelemetryToken=n,this.tenantRegister.addObserver(new D(a=>this.addUnloadListener(a))),this.scheduleWithNextTick()}scheduledInvocation=null;scheduledInvocationTime=0;isPublishing=!1;isListenerRegistered=!1;schedule(e=xe){if(this.isPublishing)return;if(this.scheduledInvocation){if(this.scheduledInvocationTime<this.now()+e)return;clearTimeout(this.scheduledInvocation),this.scheduledInvocation=null}const t=()=>{this.isPublishing=!0,this.scheduledInvocation=null,this.eventPublisher.publish(()=>{this.isPublishing=!1,this.eventPublisher.hasEvents()?this.scheduleSubsequent():this.scheduleWithNextTick()},()=>{this.isPublishing=!1,this.scheduleWithNextTick()})};this.scheduledInvocation=setTimeout(t,e),this.scheduledInvocationTime=this.now()+e}scheduleWithNextTick(){this.schedule(xe)}scheduleSubsequent(){this.schedule(Lt)}scheduleError(){this.schedule(It)}now(){return typeof performance<"u"&&typeof performance.now=="function"?performance.now():Date.now()}addUnloadListener(e){this.isListenerRegistered||e.telemetryToken===this.consoleTelemetryToken&&(e.source==="weblib-v1"||e.source==="weblib-v2")&&typeof window<"u"&&(window.addEventListener("beforeunload",()=>this.eventPublisher.flush({initiatedByBeforeUnload:!0})),this.isListenerRegistered=!0)}}class xt{idToPropsMap;propsToIdMap;observers;constructor(){this.idToPropsMap=new Map,this.propsToIdMap=new Map,this.observers=[]}set(e,t){const n=this.copyAndTransformRegisterProps(t);this.idToPropsMap.set(e,n),this.propsToIdMap.set(this.serialize(n),e),this.observers.forEach(a=>a.notify(n))}hasTenantId(e){return this.idToPropsMap.has(e)}getProps(e){return this.idToPropsMap.get(e)}getTenantId(e){const t=this.serialize(this.copyAndTransformRegisterProps(e));return this.propsToIdMap.get(t)}addObserver(e){this.observers.push(e)}serialize(e){const t=e.telemetryTokensForPublicEvents?.length?[...e.telemetryTokensForPublicEvents].sort().join(","):void 0;return JSON.stringify({t:e.telemetryToken,t4p:t,s:e.source})}copyAndTransformRegisterProps(e){const t=(()=>{if(e.telemetryTokensForPublicEvents)return[...e.telemetryTokensForPublicEvents];if(e.parentTelemetryToken)return[e.parentTelemetryToken]})();return{telemetryToken:e.telemetryToken,telemetryTokensForPublicEvents:t,source:e.source}}}class Ot{tenants=[];currentHash="";async addTenant(e){const t=this.normalizeTenant(e),n=this.findExistingTenant(t);if(n){if(this.mergeAssetLocations(n,t))try{this.currentHash=await this.calculateHash()}catch{this.currentHash=""}return}try{this.currentHash=await this.calculateHash(t),this.tenants.push(t)}catch{this.currentHash="",this.tenants.push(t)}}getTenantTable(){return{hash:this.currentHash,tenants:[...this.tenants]}}getCurrentHash(){return this.currentHash}async calculateHash(e){const n=(e?[...this.tenants,e]:this.tenants).sort((c,s)=>JSON.stringify(c).localeCompare(JSON.stringify(s))),a=JSON.stringify(n),o=new TextEncoder,r=await crypto.subtle.digest("SHA-256",o.encode(a));return Array.from(new Uint8Array(r)).map(c=>c.toString(16).padStart(2,"0")).join("")}normalizeTenant(e){return{...e,assetsLocations:e.assetsLocations?[...new Set(e.assetsLocations)].sort():e.assetsLocations}}findExistingTenant(e){return this.tenants.find(t=>t.name===e.name&&t.version===e.version)}mergeAssetLocations(e,t){const n=e.assetsLocations||[],a=t.assetsLocations||[];if(a.length===0)return!1;const o=[...n,...a],r=[...new Set(o)].sort();return n.length===r.length?!1:(e.assetsLocations=r.length>0?r:void 0,!0)}}let j;const Nt=new Uint8Array(16);function _t(){if(!j&&(j=typeof crypto<"u"&&crypto.getRandomValues&&crypto.getRandomValues.bind(crypto),!j))throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");return j(Nt)}const m=[];for(let i=0;i<256;++i)m.push((i+256).toString(16).slice(1));function Ft(i,e=0){return m[i[e+0]]+m[i[e+1]]+m[i[e+2]]+m[i[e+3]]+"-"+m[i[e+4]]+m[i[e+5]]+"-"+m[i[e+6]]+m[i[e+7]]+"-"+m[i[e+8]]+m[i[e+9]]+"-"+m[i[e+10]]+m[i[e+11]]+m[i[e+12]]+m[i[e+13]]+m[i[e+14]]+m[i[e+15]]}const Oe={randomUUID:typeof crypto<"u"&&crypto.randomUUID&&crypto.randomUUID.bind(crypto)};function zt(i,e,t){if(Oe.randomUUID&&!i)return Oe.randomUUID();i=i||{};const n=i.random||(i.rng||_t)();return n[6]=n[6]&15|64,n[8]=n[8]&63|128,Ft(n)}class Dt{constructor(e){this.panoramaWrapper=e;const t=T.getInstance().getTelemetryConfig();this.eventPublisher=new E({endpoint:t.endpoint,fallbackEndpoint:t.fallbackEndpoint,authorizationHeader:t.authHeader},T.getInstance(),this.panoramaWrapper,this.tenantTableManager),this.requestScheduler=new Pt(this.eventPublisher,this.tenantRegister,T.getInstance().getConsoleTelemetryToken())}tenantRegister=new xt;tenantTableManager=new Ot;eventPublisher;requestScheduler;register(e){const t=this.tenantRegister.getTenantId(e);if(t!==void 0)return t;let n;do n=zt().split("-")[0];while(this.tenantRegister.hasTenantId(n));return this.tenantRegister.set(n,e),n}addEvent(e){const t=this.tenantRegister.getProps(e.tenantId);if(t===void 0)return;const n=[t.telemetryToken];e.publicEvent&&t.telemetryTokensForPublicEvents!==void 0&&n.push(...t.telemetryTokensForPublicEvents),e.event.version=ae(e.event.version),this.eventPublisher.addEvent(e.tenantId,e.event,n),e.event.type==="error"&&this.requestScheduler.scheduleError()}dangerouslyFlushEvents(){this.eventPublisher.flush({initiatedByBeforeUnload:!1})}addRegistrationObserver(e){this.tenantRegister.addObserver(e)}registerTenant(e,t){this.tenantTableManager.addTenant(e).catch(()=>{})}getTenants(){return this.tenantTableManager.getTenantTable()}}class At{register(e){return""}addEvent(e){}dangerouslyFlushEvents(){}addRegistrationObserver(e){}}const z=T.getInstance().getConsoleTelemetryToken(),Ne="v1/c99544e0829cd2b8b7386c5771253e66b1770105efd4a682aebc6626c64322b9";if(typeof window<"u"){const i=new Fe(window),t=T.getInstance().parseCookie(Le)==="bot"?new At:new Dt(i),n=new lt(i);z&&(new $e(window.document,z,t),new F(window,z,t),new ht(z,t,n,[Ne]),new Ge(window,z,t,n,new ct(window),i,[Ne])),window[it.TELEMETRY_BROKER_PROPERTY_NAME]=t}})();
 </script>
+  <script nonce="fcyTSgAd+G8g+r20f3rZdg==">
+      window.performance.mark("AWSC-TB-Nav2-Preplatform-start");
+    </script>
+  <meta name="awsc-mezz" content="1">
+<meta id="awsc-mezz-region" name="awsc-mezz-region" content="ap-south-1">
+<meta id="awsc-mezz-locale" name="awsc-mezz-locale" content="en">
 
-            <script type="text/javascript">
-                function faddo(dd, upi) {
-                    dd.page.category.subCategories.push("ugc");
-                    dd.page.category.subCategories.push("rhfull");
-                };
-            </script>
-<script type="text/javascript">
+<meta name="awsc-console-supported-locales" content='{"consoleLanguages":[{"localeId":"en","supported":true,"localeDisplayName":"English (US)"},{"localeId":"en-UK","supported":true,"localeDisplayName":"English (UK)"},{"localeId":"id","supported":true,"localeDisplayName":"Bahasa Indonesia"},{"localeId":"de","supported":true,"localeDisplayName":"Deutsch"},{"localeId":"es","supported":true,"localeDisplayName":"Español"},{"localeId":"fr","supported":true,"localeDisplayName":"Français"},{"localeId":"ja","supported":true,"localeDisplayName":"日本語"},{"localeId":"it","supported":true,"localeDisplayName":"Italiano"},{"localeId":"pt-BR","supported":true,"localeDisplayName":"Português"},{"localeId":"ko","supported":true,"localeDisplayName":"한국어"},{"localeId":"zh-CN","supported":true,"localeDisplayName":"中文(简体)"},{"localeId":"zh-TW","supported":true,"localeDisplayName":"中文(繁體)"},{"localeId":"tr-TR","supported":true,"localeDisplayName":"Turkish (Turkey)"}]}'/>
+<meta id="awsc-mezz-fb" name="awsc-mezz-fb" content="0">
+<meta id="awsc-proxy-request-id" name="awsc-proxy-request-id" content="1c5ce9c61d71a87a56c5f143cb86e5ce">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    /* for EDDL */
-    window.appEventData = window.appEventData || [];
-
-    /* for DDO */
-    var digitalData = {
-      page: {
-        attributes: {
-          queryParameters: []
-        },
-        category: {
-          contentType: "",
-          contentSubType: "",
-          keyPage: false,
-          keyPageType: "",
-          pageType: "IDM",
-          primaryCategory: "auth",
-          subCategories: []
-        },
-        pageInfo: {
-          breadCrumbs: [],
-          cms: "idm ${project.version}",
-          destinationURL: "",
-          errorMessage: "",
-          errorType: "",
-          language: "en",
-          pageID: "",
-          pageName: "",
-          referringDomain: "",
-          referringURL: "",
-          syndicationIds: [],
-          sysEnv: "desktop",
-          title: ""
-        }
-      },
-      user: [{
-        profile: [{
-          profileInfo: {
-            accountID: "",
-            daysSinceLastPurchase: "",
-            daysSinceRegistration: "",
-            eloquGUID: "",
-            keyCloakID: "",
-            loggedIn: false,
-            profileID: "",
-            registered: false,
-            socialAccountsLinked: [],
-            subscriptionFrequency: "",
-            subscriptionLevel: "",
-            userAgent: ""
-          }
-        }]
-      }]
-    };
+<meta name="icon-domain" content='https://djfl9s9sd776a.cloudfront.net'/><style type="text/css">
+#awsgnav #nav-logo,
+#awsgnav .nav-menu-arrow,
+#awsgnav .service-icon,
+#awsgnav .nav-selected-category-arrow,
+#awsgnav .nav-menu-content-close-arrow,
+#awsgnav .service-drag-handle,
+#awsgnav #awsc-rg-loading,
+#awsgnav #awsc-rg-error:before,
+.awsc-footer-icon,
+.awsc-service-icon /* .awsc-service-icon to be used by Console Home */
+{
+    background-image: url('https://djfl9s9sd776a.cloudfront.net/icon-sprite-62c4323071cbf0be79c27450877cf9c8b3f94ec9.png');
+    background-repeat: no-repeat;
+}</style>
 
 
-    ( function( w, d, dd, undefined ) {
+<meta id="awsc-signin-endpoint" name="awsc-signin-endpoint" content="signin.aws.amazon.com">
+
+<meta id="awsc-widget-nav" name="awsc-widget-nav" content="1">
+
+
+
+<script data-platform-asset="global-nav-head" src="https://a.b.cdn.console.awsstatic.com/a/v1/RSOX7CPVZJCLMLOS4G34RA3S4LDD3XE3CY53MCL57O2AFVDQ6A2Q/awsc-head-async.js"></script>
+<script data-unified-console-app-loader data-platform-asset="unified-console" type="module" async="async" crossorigin="anonymous" src="https://a.b.cdn.console.awsstatic.com/a/v1/F4MLTBBL2XYCLM75CXRLEAB4HOUEGDMZBV4PAX47RGFLAWP4CT5Q/index.js"></script>
+<link data-platform-asset="global-nav-css" rel="stylesheet" href="https://a.b.cdn.console.awsstatic.com/a/v1/6BPGQZC4PVQOYUXDINEXGJ4XKGY2G56QBL46P5LQVOCXAZTWKBIQ/dist/polaris-global-css.css?version=*"></link>
+  
+      
+      <script nonce="fcyTSgAd+G8g+r20f3rZdg==" tb-trace>
+      !function(t){"use strict";const e=t=>`AWSC-TB-Nav2-${t}`,s="panorama";function n(){const t=window,e=[];return t.AWSC={Clog:{log:t=>{e.push(t)}}},e}function o(){const t=window;return t.GlobalSnowplowNamespace=[s],t[s]=function(...e){(t[s].q=t[s].q||[]).push(e)},t[s].q=t[s].q||[],t[s].loadTime=Date.now(),t[s].enabled=!0,t[s].q}var a={};Object.defineProperty(a,"__esModule",{value:!0});var i=a.PACKAGE_VERSION=void 0;i=a.PACKAGE_VERSION="2.0.173604.0#be4f5427";const r="tb-asset-load-error-hidden";function c(t,e){return e.startsWith(`https://${t}`)}class d{constructor(t,e,s,n,o,a,r,c){this.totalScriptsCount=t,this.tbCdnScriptsCount=e,this.assetsDomain=s,this.assetsTraceMarker=n,this.identityToken=o,this.consoleTelemetryToken=a,this.BLANK_PAGE_CHECK_TIMES_MS=[1e3,2e3,3e3,5e3,7e3,1e4],this.assets=[],this.assetLoadSuccessfulCount=0,this.assetLoadFailureCount=0,this.assetLoadScriptsFailureCount=0,this.tbCdnAssetLoadScriptsFailureCount=0,this.failedNavScript=!1,this.loaded=!1,this.hasEmittedBlankPageEvent=!1,this.blankPageTimeoutIds=[];const d=t=>{this.assetEventListener(!0,t)},l=t=>{this.assetEventListener(!1,t)};document.addEventListener("error",d,!0),document.addEventListener("load",l,!0);const u=t=>{document.removeEventListener("error",d,!0),document.removeEventListener("load",l,!0),window.removeEventListener("load",u),window.removeEventListener("unload",u),this.loaded=!0;const e=this.hasErrors();if(e&&this.showErrors(),"bot"!==c){const s={assetLoadSuccessfulCount:this.assetLoadSuccessfulCount,assetLoadFailureCount:this.assetLoadFailureCount,assetLoadErrorPageShown:e,assets:this.assets,windowEventType:t.type},n={events:[{type:"asset-load-metric",requestId:this.getRequestId(),timestamp:(new Date).toISOString(),location:window.location.href,version:i,retries:0,content:s,callerCategory:c,tokenRefs:[0]}],tokens:[this.consoleTelemetryToken]};this.sendPayload(r,n)}};window.addEventListener("load",u),window.addEventListener("unload",u),"bot"!==c&&(this.startBlankPageChecks(r,c),window.addEventListener("beforeunload",(()=>{const t=this.isPageBlank(),e=performance.now();this.emitBlankPageMetricOnce(r,c,t,e)})))}isPageBlank(){const t=document.querySelector("#app");if(0===t?.children.length)return"blank";const e=document.querySelector("#app main");if(!e)return"unknown";const s=Array.from(e.getElementsByTagName("iframe")).filter((t=>{try{return t.checkVisibility({opacityProperty:!0,visibilityProperty:!0,contentVisibilityAuto:!0})&&t.contentWindow?.location.href}catch{return!1}})),n=t=>!t?.textContent?.trim();return(s.length>0?s.every((t=>n(t.contentWindow.document.body))):n(e))?"blank":"nonblank"}emitBlankPageMetricOnce(t,e,s,n){if(this.hasEmittedBlankPageEvent||"unknown"===s)return;this.hasEmittedBlankPageEvent=!0;const o={events:[{type:"blank-page",requestId:this.getRequestId(),timestamp:(new Date).toISOString(),location:window.location.href,version:i,content:{},blankPage:{isPageBlank:"blank"===s,detectionTimeInMs:n},callerCategory:e,tokenRefs:[0]}],tokens:[this.consoleTelemetryToken]};this.sendPayload(t,o),this.clearRemainingTimeouts()}startBlankPageChecks(t,e){this.BLANK_PAGE_CHECK_TIMES_MS.forEach((s=>{const n=setTimeout((()=>{if(this.hasEmittedBlankPageEvent)return;const n=this.isPageBlank();("nonblank"===n||"blank"===n&&s===this.BLANK_PAGE_CHECK_TIMES_MS[this.BLANK_PAGE_CHECK_TIMES_MS.length-1])&&this.emitBlankPageMetricOnce(t,e,n,s)}),s);this.blankPageTimeoutIds.push(n)}))}clearRemainingTimeouts(){this.blankPageTimeoutIds.forEach((t=>clearTimeout(t))),this.blankPageTimeoutIds=[]}sendPayload(t,e){const s=new window.XMLHttpRequest;s.open("POST",t),s.setRequestHeader("Authorization",this.createAuthHeaderV2()),s.setRequestHeader("Content-Type","application/json"),s.send(JSON.stringify(e))}showErrors(){const t=document.querySelector(`.${r}`);t?.classList.remove(r)}hasErrors(){return t=this.totalScriptsCount,e=this.tbCdnScriptsCount,s=this.assetLoadScriptsFailureCount,n=this.tbCdnAssetLoadScriptsFailureCount,o=this.failedNavScript,0!==t&&(!!o||(0===e?t===s:e===n));var t,e,s,n,o}handleNavScript(t,e){this.failedNavScript=t,this.addAssetLoadEvent("SCRIPT",t,e),this.loaded&&this.hasErrors()&&this.showErrors()}addAssetLoadEvent(t,e,s){if("SCRIPT"===t&&e&&(this.assetLoadScriptsFailureCount+=1,(c(this.assetsDomain.prod,s)||c(this.assetsDomain.staged,s))&&(this.tbCdnAssetLoadScriptsFailureCount+=1)),"LINK"===t||"SCRIPT"===t){this.assetLoadSuccessfulCount+=e?0:1,this.assetLoadFailureCount+=e?1:0;const n={source:s,success:!e,target:"SCRIPT"===t?"script":"style"},o=window.performance.getEntriesByName(s);o.length&&(n.loadTimeInMs=o[0].duration),this.assets.push(n)}}assetEventListener(t,e){const s=e.target;if(!s||"function"!=typeof s.hasAttribute||!1===s.hasAttribute(this.assetsTraceMarker))return;const n=s.nodeName.toUpperCase(),o="SCRIPT"===n?s.src:"LINK"===n?s.href:"";this.addAssetLoadEvent(n,t,o)}getRequestId(){const t=document.querySelector('meta[name="awsc-proxy-request-id"]');return t&&t.content||"unknown"}createAuthHeaderV2(){return`Bearer ${this.identityToken}`}}t.loadAssets=function({totalScriptsCount:t,tbCdnScriptsCount:s,assetsDomain:a,assetsTraceMarker:i,identityToken:r,consoleTelemetryToken:c,bootstrapTelemetryToken:l,endpoint:u,callerCategory:h,nav2AllowListed:m,defaultLocale:p,supportedLocales:S,loadNavSrc:C}){const E=new d(t,s,a,i,r,c,u,h);if(m){return function(t,s){n="import loadNav.js",window.performance.mark(e(n));var n;const{assetMonitor:o}=s,a=async()=>import(t).catch((()=>{o.handleNavScript(!0,t)})).then((n=>{if(n)return(t=>{window.performance.measure(`${e(t)} duration`,e(t))})("import loadNav.js"),o.handleNavScript(!1,t),n.loadNav(s)}));return a().catch((t=>console.error(t)))}(C,{assetMonitor:E,defaultLocale:p,shimmedEvents:{clog:n(),panorama:o()},supportedLocales:S,telemetryToken:l,startTime:performance.now()})}},Object.defineProperty(t,Symbol.toStringTag,{value:"Module"})}(this.TBLib=this.TBLib||{});
+
+      //# sourceURL=AssetLoader.js
+      //# sourceMappingURL=https://a.b.cdn.console.awsstatic.com/a/v1/VQKGHJYUIXF7MNGURTHP3BVQ2QB6TT52LAILNOHFWUFNVOG2I5GA/AssetLoader.js.map
+    </script>
+      <script nonce="fcyTSgAd+G8g+r20f3rZdg==">
+        TBLib.loadAssets({"totalScriptsCount":1,"tbCdnScriptsCount":1,"assetsDomain":{"prod":"a.b.cdn.console.awsstatic.com","staged":"a.b.cdn.console.awsstatic.com"},"assetsTraceMarker":"tb-trace","endpoint":"https://cell-0.ap-south-1.prod.telemetry.console.api.aws/telemetry","identityToken":"eyJ0eXAiOiJKV1MiLCJrZXlSZWdpb24iOiJ1cy1lYXN0LTEiLCJhbGciOiJFUzM4NCIsImtpZCI6IjQ1YzkxMTJjLTEwZDMtNDk5NS04NzI2LWQ5ZWQ3ODA0MjYzNSJ9.eyJzdWIiOiIiLCJzaWduaW5UeXBlIjoiUFVCTElDIiwiaXNzIjoiaHR0cHM6XC9cL3NpZ25pbi5hd3MuYW1hem9uLmNvbVwvc2lnbmluIiwia2V5YmFzZSI6Im1GWDhubXZkeStEUEhhXC9cLzhJcEJvTEFhd05GZEM4d0tBeGRmUVZ4MkRIND0iLCJhcm4iOiJhcm46YXdzOmlhbTo6MDQzMzA5MzI2NTk5OnJvb3QiLCJ1c2VybmFtZSI6IlJha2VzaGt1bWFyIn0.pKToMjTKctiX4pT_ibneVOLIWQoMNCLeDJYvXc_XnZGLLKEiAAWpTprLXmUWVwHLtVXtpc8jyP6evEdAvFQQP7fp7vNpgmXNG0MngGSaS2FG3FHQIR7p1qZJN26TY8bf","consoleTelemetryToken":"v1/ba5be83d70d65c74006aba9009d7945eb694fd470d938013a410e3626b8853f9","bootstrapTelemetryToken":"v1/f6d99375af16983e997bcf9fe9ef3a4e00e7cef4778193233b89742b5b2ab8d7","callerCategory":"customer","nav2AllowListed":false,"defaultLocale":"en","loadNavSrc":"https://a.b.cdn.console.awsstatic.com/a/v1/VQKGHJYUIXF7MNGURTHP3BVQ2QB6TT52LAILNOHFWUFNVOG2I5GA/loadNav.js"})
+      </script>
     
-      function getCookie( name ) {
-        var value = "; " + document.cookie;
-        var parts = value.split( "; " + name + "=" );
-        if ( parts.length == 2 ) {
-          return parts.pop().split( ";" ).shift();
-        }
-      }
-      
-      function getCategories() {
-        var relURL = w.location.pathname; 
-        var categories = { primaryCategory: "", subCategories: [] },
-          url = relURL.split('?')[0].split('#')[0].split(/\//);
-        for(var i=1, l=url.length; i<l; i++) {
-          if (i !== 1 && i <= 4) {
-            categories.subCategories.push(url[i]);
-          }
-          if (i === 1) {
-            categories.primaryCategory = url[i].length > 0 ? url[i] : "root";
-          }
-        }
-        return categories;
-      }
-      
-      function getQueryParams() {
-        return w.location.href.split('?')[1] ? w.location.href.split('?')[1].replace(/=/g,':').split('&') : "";
-      }
-           
-      dd.page.attributes.queryParameters = getQueryParams();
-      var categoryObj = getCategories();
-      dd.page.category.primaryCategory = categoryObj.primaryCategory;
-      dd.page.pageInfo.destinationURL = w.location.href;
-      dd.page.pageInfo.pageID = "login.ftl"; 
-      dd.page.pageInfo.pageName = d.title.split("|")[0].trim();
-      dd.page.pageInfo.title = d.title.trim();
-
-      if ( d.referrer ) {
-        var a = d.createElement("a");
-        a.href = d.referrer;
-        dd.page.pageInfo.referringDomain = a.hostname;
-        dd.page.pageInfo.referringURL = a.href;
-      }
-      dd.page.pageInfo.sysEnv = ( w.innerWidth <= 768 ) ? "tablet" : "desktop";
-      var elqGUID = getCookie( "rh_elqCustomerGUID" );
-      
-      var upi = dd.user[ 0 ].profile[ 0 ].profileInfo;
-      
-      if (elqGUID) {
-        upi.eloquaGUID = elqGUID;
-      }
-      
-      if(w.navigator){
-        upi.userAgent = w.navigator.userAgent;
-      }
-      
-      faddo(dd, upi);
-            
-    } )( window, document, digitalData );
+  <link rel="stylesheet" href="https://a.b.cdn.console.awsstatic.com/a/v1/Y2KOPWW4HO57T326CSV4M4DE4CTTSWGZU4MIJ7KT3X4DZWJXZRLA/style.css" integrity="sha256-1XgrV20YUmK0GxDTlFfiT79leICd6c+vbS2B+zmLmiU=" crossorigin="anonymous" tb-trace>
+  <style >html { background-color: #ffffff; }</style>
+</head>
+<body spellcheck="false" class="">
+  <div id="b">
+    <div id="h" role="navigation" ng-non-bindable>
     
-</script> 
-<script id="dpal" src="https://www.redhat.com/ma/dpal.js" type="text/javascript"></script>
+<div id="consoleNavHeader" style=""><div id="skeleton-nav-awt-wrapper" data-testid="skeleton-nav-default-awt-wrapper">
+<div class="skeleton-nav-awt-loader">
+  <div class="aws-logo-wrapper">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      version="2.0"
+      focusable="false"
+      aria-hidden="true"
+      class="aws-logo"
+      viewBox="0 0 29 17"
+    >
+      <path
+        class="aws-logo__letters"
+        d="M8.38 6.17a2.6 2.6 0 00.11.83c.08.232.18.456.3.67a.4.4 0 01.07.21.36.36 0 01-.18.28l-.59.39a.43.43 0 01-.24.08.38.38 0 01-.28-.13 2.38 2.38 0 01-.34-.43c-.09-.16-.18-.34-.28-.55a3.44 3.44 0 01-2.74 1.29 2.54 2.54 0 01-1.86-.67 2.36 2.36 0 01-.68-1.79 2.43 2.43 0 01.84-1.92 3.43 3.43 0 012.29-.72 6.75 6.75 0 011 .07c.35.05.7.12 1.07.2V3.3a2.06 2.06 0 00-.44-1.49 2.12 2.12 0 00-1.52-.43 4.4 4.4 0 00-1 .12 6.85 6.85 0 00-1 .32l-.33.12h-.14c-.14 0-.2-.1-.2-.29v-.46A.62.62 0 012.3.87a.78.78 0 01.27-.2A6 6 0 013.74.25 5.7 5.7 0 015.19.07a3.37 3.37 0 012.44.76 3 3 0 01.77 2.29l-.02 3.05zM4.6 7.59a3 3 0 001-.17 2 2 0 00.88-.6 1.36 1.36 0 00.32-.59 3.18 3.18 0 00.09-.81V5A7.52 7.52 0 006 4.87h-.88a2.13 2.13 0 00-1.38.37 1.3 1.3 0 00-.46 1.08 1.3 1.3 0 00.34 1c.278.216.63.313.98.27zm7.49 1a.56.56 0 01-.36-.09.73.73 0 01-.2-.37L9.35.93a1.39 1.39 0 01-.08-.38c0-.15.07-.23.22-.23h.92a.56.56 0 01.36.09.74.74 0 01.19.37L12.53 7 14 .79a.61.61 0 01.18-.37.59.59 0 01.37-.09h.75a.62.62 0 01.38.09.74.74 0 01.18.37L17.31 7 18.92.76a.74.74 0 01.19-.37.56.56 0 01.36-.09h.87a.21.21 0 01.23.23 1 1 0 010 .15s0 .13-.06.23l-2.26 7.2a.74.74 0 01-.19.37.6.6 0 01-.36.09h-.8a.53.53 0 01-.37-.1.64.64 0 01-.18-.37l-1.45-6-1.44 6a.64.64 0 01-.18.37.55.55 0 01-.37.1l-.82.02zm12 .24a6.29 6.29 0 01-1.44-.16 4.21 4.21 0 01-1.07-.37.69.69 0 01-.29-.26.66.66 0 01-.06-.27V7.3c0-.19.07-.29.21-.29a.57.57 0 01.18 0l.23.1c.32.143.656.25 1 .32.365.08.737.12 1.11.12a2.47 2.47 0 001.36-.31 1 1 0 00.48-.88.88.88 0 00-.25-.65 2.29 2.29 0 00-.94-.49l-1.35-.43a2.83 2.83 0 01-1.49-.94 2.24 2.24 0 01-.47-1.36 2 2 0 01.25-1c.167-.3.395-.563.67-.77a3 3 0 011-.48A4.1 4.1 0 0124.4.08a4.4 4.4 0 01.62 0l.61.1.53.15.39.16c.105.062.2.14.28.23a.57.57 0 01.08.31v.44c0 .2-.07.3-.21.3a.92.92 0 01-.36-.12 4.35 4.35 0 00-1.8-.36 2.51 2.51 0 00-1.24.26.92.92 0 00-.44.84c0 .249.1.488.28.66.295.236.635.41 1 .51l1.32.42a2.88 2.88 0 011.44.9 2.1 2.1 0 01.43 1.31 2.38 2.38 0 01-.24 1.08 2.34 2.34 0 01-.68.82 3 3 0 01-1 .53 4.59 4.59 0 01-1.35.22l.03-.01z"
+      ></path>
+      <path
+        class="aws-logo__smile"
+        d="M25.82 13.43a20.07 20.07 0 01-11.35 3.47A20.54 20.54 0 01.61 11.62c-.29-.26 0-.62.32-.42a27.81 27.81 0 0013.86 3.68 27.54 27.54 0 0010.58-2.16c.52-.22.96.34.45.71z"
+      ></path>
+      <path
+        class="aws-logo__smile"
+        d="M27.1 12c-.4-.51-2.6-.24-3.59-.12-.3 0-.34-.23-.07-.42 1.75-1.23 4.63-.88 5-.46.37.42-.09 3.3-1.74 4.68-.25.21-.49.09-.38-.18.34-.95 1.17-3.02.78-3.5z"
+      ></path>
+    </svg>
+  </div>
+</div>
+<style id="skeleton-nav-awt-style">
+  .skeleton-nav-awt-loader .aws-logo {
+    display: block;
+    width: 33px;
+    height: 19px;
+    position: relative;
+  }
 
+  .skeleton-nav-awt-loader .aws-logo-wrapper {
+    position: relative;
+    padding: 9px 17px;
+  }
 
-        <meta name="robots" content="noindex, nofollow">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://redhat.com/">
-        <meta property="og:determiner" content="the">
-        <meta property="og:site_name" content="Red Hat">
-        <meta property="og:title" content="Red Hat">
+  .skeleton-nav-awt-loader .aws-logo__letters {
+    fill: #ffffff;
+  }
 
+  .skeleton-nav-awt-loader .aws-logo__smile {
+    fill: #ffffff;
+    fill-rule: evenodd;
+  }
 
-<link rel="icon" href="/auth/resources/a7asx/login/rhd-theme/img/favicon.ico">
-
-<!-- Patternfly Elements no-js fallback styles -->
-
-<style>
-.pfe-navigation {
-    --pfe-navigation__nav-bar--highlight-color: #e00;
-    --pfe-navigation__dropdown--highlight-color: #e00;
-}
+  .skeleton-nav-awt-loader {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    background-color: #161d26;
+    border-bottom: 1px solid rgb(84, 91, 100);
+  }
 </style>
-
-<link href="/auth/resources/a7asx/login/rhd-theme/dist/styles/patternfly.min.css" rel="stylesheet" />
-<link href="/auth/resources/a7asx/login/rhd-theme/dist/styles/patternfly-addons.css" rel="stylesheet" />
-
-        <link href="/auth/resources/a7asx/login/rhd-theme/dist/styles/main.css" rel="stylesheet" />
-
-<!-- Required for lightdom styles -->
-<link rel="stylesheet" href="/auth/resources/a7asx/login/rhd-theme/dist/pfelements/assets/bundle-CDjXsjNu.css" />
-<style>
-    rh-footer:not(:defined) {
-        opacity: 0;
-    }
-</style>
-
-
-<script type="text/javascript">
-    (function(d) {
-        // Not supported in IE11
-        if (!d.currentScript) {
-            var loginie11 = document.createElement('link');
-            loginie11.href = "/auth/resources/a7asx/login/rhd-theme/css/login-ie11-9811430bc1.min.css"
-            loginie11.rel = 'stylesheet';
-            d.head.appendChild(loginie11);
-        }
-    })(document);
-</script> 
-
-
-<!-- Sentry -->
-<script
-  src="https://js.sentry-cdn.com/73604e6540bd413bb9d58ab4601b8aa8.min.js"
-  crossorigin="anonymous"
-  data-lazy="no"
-></script>
-<script>
-  var host = window.location.hostname;
-  if (host === "localhost") Sentry.init({environment:"localhost"});
-  if (host === "sso.dev.redhat.com") Sentry.init({environment:"dev"});
-  if (host === "sso.qa.redhat.com") Sentry.init({environment:"qa"});
-  if (host === "sso.stage.redhat.com") Sentry.init({environment:"stage"});
-  if (host === "sso.redhat.com") Sentry.init({environment:"production"});
-</script>
-
-<!-- unified nav and footer scripts -->
-<script type="module">
-  import "/auth/resources/a7asx/login/rhd-theme/dist/pfelements/bundle.js";
-  await customElements.whenDefined("rh-footer");
-</script>
-
-<!-- Common JS -->
-<script type="text/javascript">
-    rhd = {
-        config: {
-            username: '',
-            firstName: '',
-            lastName: '',
-            userEmail: '',
-            regHintEmail: '',
-            jobTitle: null,
-            phoneNumber: null,
-            user_profile_level: "rhfull",
-            form_fields_visible: {"firstName": true,"lastName": true,"password": true,"address": true,"phoneNumber": true,"accountType": true,"confirmPassword": true,"company": true,"jobTitleSelect": true,"email": true},
-            form_fields_required: {"firstName": true,"lastName": true,"password": true,"address": true,"phoneNumber": true,"accountType": true,"confirmPassword": true,"jobTitleSelect": true,"email": true},
-            website_current: "ugc",
-            email_strict_check: true,
-            allow_duplicate_email: true,
-            addressSubdivisionExpansionEnabled: false,
-            displayRegistrationMessage: false,
-            registrationMessage: '',
-            registrationMessageType: '',
-            displayRegistrationForm: true,
-            displayEmailVerifyInstructions: false,
-            displayUpdateProfileMessage: false,
-            updateProfileMessage: '',
-            updateProfileMessageType: '',
-            isAutoUserRegFlow: false,
-            skipValidation: false,
-            formFields: [],
-            formScope: ""
-        }
-    }
-        rhd.config.loginUrl = "/auth/realms/redhat-external/login-actions/authenticate?client_id=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc-oidc&amp;tab_id=4Mysc1DPF58&amp;client_data=eyJydSI6Imh0dHBzOi8vd3d3LnJlZGhhdC5jb20vd2FwcHMvdWdjL3Nzby9sb2dpbiIsInJ0IjoiY29kZSIsInN0IjoiODFlNGIyNjItYzg4OS00MDI2LTljMDctYjFjOGUwYmRjYjBmIn0";
-      rhd.config.registrationAction = "https://sso.redhat.com/auth/realms/redhat-external/login-actions/authenticate?session_code=FaU13KES-2gPTrTquW9IaWkY4ydukftf9b9s3ncnXI4&amp;execution=a0a6af2c-d0f7-472f-8be2-24a733d45517&amp;client_id=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc-oidc&amp;tab_id=4Mysc1DPF58&amp;client_data=eyJydSI6Imh0dHBzOi8vd3d3LnJlZGhhdC5jb20vd2FwcHMvdWdjL3Nzby9sb2dpbiIsInJ0IjoiY29kZSIsInN0IjoiODFlNGIyNjItYzg4OS00MDI2LTljMDctYjFjOGUwYmRjYjBmIn0";
-    window.currentLanguageTag = "en";
-</script>
-
-<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
-
-
-
-        <script src="/auth/resources/a7asx/login/rhd-theme/dist/scripts/vendors.js" type="text/javascript"></script>
-
-<script>
-    jQuery.extend( jQuery.validator.messages, {
-        required: "This field is required",
-        remote: "Please fix this field",
-        url: "Please enter a valid URL",
-        date: "Please enter a valid date",
-        dateISO: "Please enter a valid date (ISO)",
-        number: "Please enter a valid number",
-        digits: "Please enter only digits",
-        equalTo: "Please enter the same value again",
-        maxlength: jQuery.validator.format( "Please enter no more than {0} characters" ),
-        minlength: jQuery.validator.format( "Please enter at least {0} characters" ),
-        rangelength: jQuery.validator.format( "Please enter a value between {0} and {1} characters long" ),
-        range: jQuery.validator.format( "Please enter a value between {0} and {1}" ),
-        max: jQuery.validator.format( "Please enter a value less than or equal to {0}" ),
-        min: jQuery.validator.format( "Please enter a value greater than or equal to {0}" ),
-        step: jQuery.validator.format( "Please enter a multiple of {0}" )
-    } );
-    jQuery.extend( jQuery.validator.messages, {
-        phone: "This field may only contain the following characters (0-9) (+) (-) (space) (.).",
-        bannedChars: "This field cannot contain the following special characters (&quot;) ($) (^) (&lt;) (&gt;) (|) (+) (%) (\\).",
-        bannedCharsUsername: "Red Hat Login ID cannot contain spaces, national characters or the following special characters (&quot;) ($) (^) (&lt;) (&gt;) (|) (+) (%) (/) (;) (:) (,) () (*) (=) (~) (#) (() ()) (!) (&amp;)",
-        remoteCustom: "Please fix this field"
-    } );
-</script>
-
-        <script src="/auth/resources/a7asx/login/rhd-theme/dist/scripts/custom.js" type="text/javascript"></script>
-
-    </head>
-
-        <body id="rh-login" class="home  page">
-            <a href="#rh-login-card" class="visually-hidden focusable skip-link">
-                Skip to main content
-            </a>
-            <div class="layout-container">
-
-
-<pfe-navigation id="pfe-navigation" role="banner">
-    <nav class="pfe-navigation" aria-label="Main Navigation">
-        <div class="pfe-navigation__logo-wrapper" id="pfe-navigation__logo-wrapper">
-            <a href="https://redhat.com" class="pfe-navigation__logo-link">
-                <img class="pfe-navigation__logo-image pfe-navigation__logo-image--screen pfe-navigation__logo-image--print pfe-navigation__logo-image--small" src="/auth/resources/a7asx/login/rhd-theme/img/RHLogo_white.svg" width="400" alt="Red Hat logo" />
-            </a>
-        </div>
-    </nav>
-    
-    <div slot="secondary-links" class="pfe-navigation__site-switcher">
-        <button class="pfe-navigation__secondary-link">
-            <pfe-icon icon="web-icon-grid-3x3" size="sm" aria-hidden="true"></pfe-icon>
-            All Red Hat
-        </button>
-        <pfe-navigation-dropdown dropdown-width="full">
-        <site-switcher lang='en' class="pf-u-px-xl"></site-switcher>
-        </pfe-navigation-dropdown>
+</div></div>
+    </div>
+    <div id="cc">
+      <div id="c">
+        <div id="app"></div>
         
+    <style >
+      .tb-asset-load-error-hidden {
+        display: none;
+      }
+    </style>
+
+    <div class="tb-asset-load-error-hidden">
+      <style>._typography_14jsq_1{font-family:"Amazon Ember","Helvetica Neue",Roboto,Arial,sans-serif;font-size:14px;line-height:20px;color:var(--color-body-dh9dj)}._typography_14jsq_1 h1,._typography_14jsq_1 p{font-family:inherit;margin:0;padding:4px 0}._typography_14jsq_1 p{font-weight:400}._typography_14jsq_1 h1{font-size:24px;line-height:30px;color:var(--color-heading-dh9dj);font-weight:700}._typography_14jsq_1 a{cursor:pointer;color:var(--color-link-dh9dj);text-decoration:underline;text-underline-offset:.25em;text-decoration-thickness:1px}._typography_14jsq_1 a:active,._typography_14jsq_1 a:hover{color:var(--color-link-hover-dh9dj)}._typography_14jsq_1 a:focus{outline:0;border-radius:4px;box-shadow:0 0 0 2px var(--color-border-focused-dh9dj)}body ._root_14jsq_38{--bg-content-dh9dj:#ffffff;--color-heading-dh9dj:#0f141a;--color-body-dh9dj:#0f141a;--color-link-dh9dj:#006ce0;--color-link-hover-dh9dj:#002b66;--color-border-focused-dh9dj:#006ce0}body.awsui-dark-mode ._root_14jsq_38,body.awsui-polaris-dark-mode ._root_14jsq_38{--bg-content-dh9dj:#161d26;--color-heading-dh9dj:#ebebf0;--color-body-dh9dj:#c6c6cd;--color-link-dh9dj:#42b4ff;--color-link-hover-dh9dj:#75cfff;--color-border-focused-dh9dj:#42b4ff}._root_14jsq_38{display:block;box-sizing:border-box;max-width:690px;margin:16vh auto 0;padding:24px;background:var(--bg-content-dh9dj)}._root_14jsq_38 svg{display:block;padding:12px 0}</style><main id="awsc-error-assets" role="main" class="_root_14jsq_38"><div class="_typography_14jsq_1"><h1>Unable to load content</h1><p>We could not load the content for the page. This might be due to your firewall or proxy server blocking certain domains used to load this page content.</p><p>Refresh the page, and if you continue to experience this error, contact <a href="https://ap-south-1.console.aws.amazon.com/support/" target="_blank" rel="noopener">AWS Support</a>.</p></div></main>
     </div>
-
-        <div slot="account">
-            <a href="/auth/realms/redhat-external/login-actions/registration?client_id=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc-oidc&amp;tab_id=4Mysc1DPF58&amp;client_data=eyJydSI6Imh0dHBzOi8vd3d3LnJlZGhhdC5jb20vd2FwcHMvdWdjL3Nzby9sb2dpbiIsInJ0IjoiY29kZSIsInN0IjoiODFlNGIyNjItYzg4OS00MDI2LTljMDctYjFjOGUwYmRjYjBmIn0">
-                <pfe-icon icon="web-icon-user" pfe-size="md" aria-hidden="true"></pfe-icon>
-                Register
-            </a>
-        </div>
-</pfe-navigation>
-
-    <div class="pf-c-banner pf-m-warning">
-        <div class="pf-l-flex pf-m-space-items pf-u-flex-nowrap pf-u-py-xs"
-             style="text-wrap: auto; max-width: 1150px; margin: 0 auto;">
-            <div class="pf-l-flex__item">
-                <span class="pf-screen-reader">Warning banner:</span>
-                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
-            </div>
-            <div class="pf-l-flex__item">
-                The ability to log in with an email address is no longer supported. Users must log in with their login
-                (username). Don’t know your login(s)? Click "Forgot your login?" to recover your login.
-                Note: Some users may have a login that matches their email address. These users will be unaffected. For
-                localized versions of this message, click <a href="https://access.redhat.com/articles/7123070"
-                                                             target="_blank"
-                                                             aria-label="click here to see a translation of this message">here</a>.
-            </div>
-        </div>
-    </div>
-
-
-                <main id="rh-login-card" role="main">
-                    <div id="rh-login-container" class="pf-c-login pf-u-pt-3xl">
-                        <div class="pf-c-login__container">
-
-            <div id="rh-login-form" class="pf-c-login__main pf-u-display-flex pf-u-flex-direction-column pf-u-justify-content-space-between">
-        <div class="pf-c-login__main-header pf-u-pb-xl" style="column-gap:0">
-            <h1 id="rh-login-form-title" class="pf-c-title pf-m-3xl pf-c-spacer-2xl">Log in to your Red Hat account</h1>
-        </div>
-                <div id="login-container" class="pf-c-login__main-body pf-u-pb-0">
-
-
-    <div id="rh-login-form-alert" class="pf-c-alert pf-m-inline pf-m-danger pf-u-mb-lg pf-u-display-none" aria-label="Danger Alert" data-ouia-component-type="PF4/Alert" data-ouia-safe="true" data-ouia-component-id="OUIA-Generated-Alert-danger-1" aria-live="polite" data-multiple-logins-title="Email address associated with multiple logins" data-multiple-logins-body="To access your account, use your login instead." data-access-denied-title="Access Denied" data-access-denied-body="The login information was not recognized. Please refresh your browser and try again, or try with a different device.">
-        <div class="pf-c-alert__icon">
-            <i class="fas fa-fw fa-exclamation-circle" aria-hidden="true"></i>
-        </div>
-        <h4 class="pf-c-alert__title">
-            <span class="pf-u-screen-reader">Danger alert:</span>
-            <span id="rh-login-form-error-title">
-            </span>
-        </h4>
-        <div id="rh-login-form-error-body" class="pf-c-alert__description">
-        </div>
-    </div>
-                    <div id="rh-login-body-wrapper">
-                        <div id="rh-login-slide-in-container" class="slide-in-container pf-u-mb-xl">
-                            <section id="rh-username-verification" class="rh-slide-in show">
-    <!-- error displayed in the event of a timeout after submitting user/email -->
-    <div id="rh-login-form-alert-username" class="pf-c-alert pf-m-inline pf-m-danger pf-u-mb-lg pf-u-display-none" aria-label="Danger Alert" data-ouia-component-type="PF4/Alert" data-ouia-safe="true" data-ouia-component-id="OUIA-Generated-Alert-danger-1" aria-live="polite" >
-      <div class="pf-c-alert__icon">
-          <i class="fas fa-fw fa-exclamation-circle" aria-hidden="true"></i>
-      </div>
-      
-      <h4 class="pf-c-alert__title">
-          <span id="rh-login-form-error-title">
-              Log in attempt timed out
-          </span>
-      </h4>
-      
-      <div id="rh-login-form-error-body" class="pf-c-alert__description">
-          <p>Resubmit your information.</p>
       </div>
     </div>
-    
-    <form id="rh-username-verification-form" class="pf-c-form" novalidate>
-        <div class="pf-c-form__group">
-            <div class="pf-c-form__group-label">
-                <label class="pf-c-form__label" for="username-verification">
-                    <span class="pf-c-form__label-text"> Red Hat login</span>
-                </label> 
-            </div>
-            <input class="pf-c-form-control" required
-                type="text" id="username-verification" name="username"
-                x-autocompletetype="username"
-                data-msg-required="Red Hat login is required"
-                value=""
-                aria-invalid="false"
-                aria-describedby="username-verification-error"
-                tabindex="1"
-                autofocus
-                
-            />
-            <p class="pf-c-form__helper-text pf-m-error hide-error-text" id="username-verification-error-message" aria-live="polite">
-                <span class="pf-c-form__helper-text-icon">
-                    <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
-                </span>
-                <span id="username-verification-error"></span>
-            </p>
-        </div>
-        <div class="pf-c-form__group pf-m-action"> 
-            <button id="login-show-step2"  tabindex="2" class="rh-form-submission-button pf-c-button pf-m-block" data-text-static="Next" data-text-processing="Verifying ...">Next</button>
-        </div>
-
-
-    </form>
-    <script>
-        $().ready(new function() {
-            // if the timeout variable is present in the url, display the error message
-            util.checkForTimeout();
-        });
-        
-        // eddl form engaged
-        window.appEventData = window.appEventData || [];
-        
-        // Form viewed event
-        document.addEventListener('DOMContentLoaded', function() {
-            appEventData.push({
-                "event": "Form Viewed",
-                "form": {
-                    "formField": [
-                        {
-                            "fieldID": "rh-username-verification-form"
-                        }
-                    ],
-                    "formName": "rh-username-verification-form",
-                    "formType": "Login",
-                    "formScope": "username~password",
-                    "loginMethod": "username/password"
-                }
-            });
-        }, { once: true });
-
-        // Events triggered on engagement with form
-        const usernameField = document.getElementById("username-verification")
-        usernameField.addEventListener("change", (event) => {
-            // Form started event
-            appEventData.push({
-                "event": "Form Started",
-                "form": {
-                    "formField": [
-                        {
-                            "formName": "rh-username-verification-form",
-                        }
-                    ],
-                    "formName": "rh-username-verification-form",
-                    "formType": "Login",
-                    "formScope": "username~password",
-                    "loginMethod": "username/password"
-                }
-            });
-            // Form field engaged event
-            appEventData.push({
-            "event": "Form Field Engaged",
-                "form": {
-                    "formField": [
-                        {
-                            "fieldID": "username-verification"
-                        }
-                    ],
-                    "formName": "rh-username-verification-form",
-                    "formType": "Login",
-                    "formScope": "username~password",
-                    "loginMethod": "username/password"
-                }
-            });
-        }, { once: true });
-    </script>
-                            </section>
-                            <section id="rh-auth-flow-verification" class="rh-slide-in">
-    <form id="rh-auth-flow-verification-form" class="pf-c-form pf-c-form pf-u-h-100 pf-u-display-flex pf-u-flex-direction-column pf-u-justify-content-space-between" novalidate>
-        <div class="pf-c-form__group rh-verification-form-input-group"> 
-            <div class="pf-c-form__group-label">
-                <label class="pf-c-form__label" for="username"> 
-                    <span class="pf-c-form__label-text"> Red Hat login</span> 
-                </label>
-            </div>
-            <div class="pf-c-input-group">
-                <input  class="pf-c-form-control"  input="true" type="text" id="rh-af-username" name="username" readonly value="">
-                <button id="rh-af-edit-username" class="pf-c-button pf-m-control" type="button" aria-label="">    
-                    <i class="fas fa-times-circle" aria-label="Edit Username" title="Edit Username"></i>  
-                </button>
-            </div>
-        </div>
-
-        <div id="multiIDPFlow" class="pf-c-form__actions pf-m-action"></div>
-
-        <div id="binaryIDPFlow" class="pf-c-form__actions pf-m-action">
-            <button 
-                id="rh-sso-flow" 
-                type="button"
-                class="pf-c-button pf-m-secondary rh-auth-flow-selection-button" 
-                data-analytics-linktype="cta"
-                data-analytics-category="Auth flow"
-                data-analytics-text="Log in with IDP"
-            >
-                Log in with company single sign-on
-            </button>
-            <button 
-                id="rh-login-flow" 
-                type="button"
-                class="pf-c-button pf-m-secondary rh-auth-flow-selection-button" 
-                data-analytics-linktype="cta"
-                data-analytics-category="Auth flow"
-                data-analytics-text="Log in with Red Hat SSO"
-            >
-                Log in with Red Hat account
-            </button>
-        </div>
-    </form> 
-
-    <script>
-        window.appEventData = window.appEventData || [];
-        const submitButtonIdp = document.getElementById("rh-sso-flow");
-        // eddl form submitted
-        submitButtonIdp.addEventListener("click", (event) => {
-            appEventData.push({
-                "event": "Form Submission Succeeded",
-                "form": {
-                    "formName": "rh-auth-flow-verification-form",
-                    "formScope": "Login",
-                    "formType": "authentication",
-                    "hashedEmail": "",
-                    "loginMethod": "Federated IDP"
-                }
-            });
-        });
-    </script>
-                            </section>
-                            <section id="rh-password-verification" class="rh-slide-in ">
-
-    <form id="rh-password-verification-form" class="pf-c-form" novalidate action="https://sso.redhat.com/auth/realms/redhat-external/login-actions/authenticate?session_code=FaU13KES-2gPTrTquW9IaWkY4ydukftf9b9s3ncnXI4&amp;execution=a0a6af2c-d0f7-472f-8be2-24a733d45517&amp;client_id=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc-oidc&amp;tab_id=4Mysc1DPF58&amp;client_data=eyJydSI6Imh0dHBzOi8vd3d3LnJlZGhhdC5jb20vd2FwcHMvdWdjL3Nzby9sb2dpbiIsInJ0IjoiY29kZSIsInN0IjoiODFlNGIyNjItYzg4OS00MDI2LTljMDctYjFjOGUwYmRjYjBmIn0" onsubmit="preventFormDoubleClick(event)" method="post">
-        <div class="pf-c-form__group"> 
-            <div class="pf-c-form__group-label">
-                <label class="pf-c-form__label" for="username"> 
-                    <span class="pf-c-form__label-text"> Red Hat login</span> 
-                </label>
-            </div>
-            <div class="pf-c-input-group">
-                <input  class="pf-c-form-control" input="true" type="text" id="username" name="username" readonly value="">
-                <button id="rh-pw-edit-username" class="pf-c-button pf-m-control" type="button" aria-label="">    
-                    <i class="fas fa-times-circle" aria-label="Edit Username" title="Edit Username"></i>  
-                </button>
-            </div>
-        </div>
-            <div class="pf-c-form__group"> 
-                <div class="pf-c-form__group-label">
-                    <label class="pf-c-form__label" for="password"> 
-                        <span class="pf-c-form__label-text">Password</span> 
-                    </label>
-                </div>
-                <div class="pf-c-input-group">
-                    <input class="pf-c-form-control"
-                        input="true" type="password" id="password" name="password" maxlength="256"
-                        x-autocompletetype="current-password"
-                        data-msg-required="Password is required" aria-invalid="false"
-                    />
-                    <button id="rh-pw-password-toggle" class="pf-c-button pf-m-control" type="button" aria-label="Show Password" title="Show Password" aria-pressed="false">    
-                        <i class="fas fa-eye"></i>  
-                    </button>
-                </div>
-                <p class="pf-c-form__helper-text pf-m-error hide-error-text" id="password-verification-error-message" aria-live="polite">
-                  <span class="pf-c-form__helper-text-icon">
-                    <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
-                  </span>
-                    <span id="password-error"></span>
-                </p>
-            </div>
-        
-        
-        <div class="pf-c-form__group pf-m-action">
-            <button 
-                type="submit" 
-                id="rh-password-verification-submit-button" 
-                class="pf-c-button rh-form-submission-button" 
-                data-value-processing="Logging in ..."
-                data-analytics-linktype="cta"
-                data-analytics-category="SSO log in"
-                data-analytics-text="Log in"
-            >
-               Log in
-            </button>
-        </div>
-    </form> 
-
-    <script>
-        window.appEventData = window.appEventData || [];
-        const passwordField = document.getElementById("password")
-        const submitButton = document.getElementById("rh-password-verification-submit-button")
-        // Form field engaged event
-        passwordField.addEventListener("change", (event) => {
-            appEventData.push({
-            "event": "Form Field Engaged",
-                "form": {
-                    "formField": [
-                        {
-                            "fieldID": passwordField
-                        }
-                    ],
-                    "formName": "rh-password-verification-form",
-                    "formType": "Login",
-                    "formScope": "username~password",
-                    "loginMethod": "username/password"
-                }
-            });
-        }, { once: true });
-
-        // eddl form submitted
-        const submitButtonPw = document.getElementById("rh-password-verification-submit-button");
-        submitButtonPw.addEventListener("click", (event) => {
-            appEventData.push({
-                "event": "Form Submission Succeeded",
-                "form": {
-                    "formName": "rh-username-verification-form",
-                    "formType": "Login",
-                    "formScope": "username~password",
-                    "hashedEmail": "",
-                    "loginMethod": "username/password"
-                }
-            });
-        });
-    </script>
-                            </section>
-                        </div>
-                    </div>
-                </div>
-
-    <div class="pf-c-login__main-footer">
-        <div class="pf-c-login__main-footer-band">
-                <a id="rh-registration-link" href="/auth/realms/redhat-external/login-actions/registration?client_id=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc-oidc&amp;tab_id=4Mysc1DPF58&amp;client_data=eyJydSI6Imh0dHBzOi8vd3d3LnJlZGhhdC5jb20vd2FwcHMvdWdjL3Nzby9sb2dpbiIsInJ0IjoiY29kZSIsInN0IjoiODFlNGIyNjItYzg4OS00MDI2LTljMDctYjFjOGUwYmRjYjBmIn0" class="pf-c-button pf-m-link pf-m-inline pf-m-display-lg" aria-label="Register Link">
-                    Register for a Red Hat account
-                    <span class="pf-c-button__icon pf-m-end">
-                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
-                    </span>
-                </a>
-                <p class="pf-c-login__main-footer-band-item"> 
-                        <a id="reset-password" href="/auth/realms/redhat-external/login-actions/reset-credentials?client_id=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc-oidc&amp;tab_id=4Mysc1DPF58&amp;client_data=eyJydSI6Imh0dHBzOi8vd3d3LnJlZGhhdC5jb20vd2FwcHMvdWdjL3Nzby9sb2dpbiIsInJ0IjoiY29kZSIsInN0IjoiODFlNGIyNjItYzg4OS00MDI2LTljMDctYjFjOGUwYmRjYjBmIn0">Forgot your password?</a>
-                </p>
-                    <p class="pf-c-login__main-footer-band-item">
-                        <a id="forgot-login" href="https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/auth?client_id=forgot-login&amp;response_type=code">Forgot your login?</a>
-                    </p>
-        </div>
+    <div id="f" role="contentinfo" ng-non-bindable>
+    <div id="footer">
+</div>
+<div id="console-nav-footer" style="">
+    <div id="footer-content">
     </div>
-
-                <script type="text/javascript">
-                    util.adaptProgressiveProfileLevel();
-                </script>
-            </div>
-	            
-            <script type="text/javascript">
-                $().ready(new function() {
-                    let err = [];
-                    let step = "rh-username-verification";
-                    showHidePasswordCfg.wrapper.element = $("#passwordWrapper");
-                    loginForm.init($('#rh-password-verification-form'),err, step, 'FaU13KES-2gPTrTquW9IaWkY4ydukftf9b9s3ncnXI4', '4Mysc1DPF58', 'https://www.redhat.com/wapps/ugc-oidc');
-                });
-            </script>
-                            
-                            <footer class="pf-c-login__footer">
-                                    <div id="pf-c-content"> 
-                                        <h2 class="pf-c-title pf-m-3xl pf-u-mt-xl pf-u-pt-md">Why create an account?</h2>
-                                        <ul class="pf-c-list pf-m-plain pf-m-icon-lg">
-                                            <li class="pf-c-list__item pf-u-display-flex pf-u-align-items-center pf-u-mb-xl">
-                                                <span class="pf-c-list__item-icon pf-u-pr-sm">
-                                                    <img alt="price tag" src="/auth/resources/a7asx/login/rhd-theme/img/pricetag.png" />
-                                                </span>
-                                                <div>
-                                                    <h3 class="pf-c-title pf-m-lg pf-u-mb-xs">Product trials</h3>
-                                                    <span class="pf-c-list__item-text">Try our products hands-on to see if they’ll work for you.</span>
-                                                </div>
-                                            </li>
-                                            <li class="pf-c-list__item pf-u-display-flex pf-u-align-items-center pf-u-mb-xl">
-                                                <span class="pf-c-list__item-icon pf-u-pr-sm">
-                                                    <img alt="book" src="/auth/resources/a7asx/login/rhd-theme/img/book.png" />
-                                                </span>
-                                                <div>
-                                                    <h3 class="pf-c-title pf-m-lg pf-u-mb-xs">Learning resources</h3>
-                                                    <span class="pf-c-list__item-text">Get training and learning tools to help you use our products.</span>
-                                                </div>
-                                            </li>
-                                            <li class="pf-c-list__item pf-u-display-flex pf-u-align-items-center pf-u-mb-xl">
-                                                <span class="pf-c-list__item-icon pf-u-pr-sm">
-                                                    <img alt="headphones and mic" src="/auth/resources/a7asx/login/rhd-theme/img/support.png" />
-                                                </span>
-                                                <div>
-                                                    <h3 class="pf-c-title pf-m-lg pf-u-mb-xs">World-class support</h3>
-                                                    <span class="pf-c-list__item-text">Rely on our trusted customer support and partner enablement.</span>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <p class="pf-u-mt-2xl pf-u-mb-lg pf-u-font-size-xs pf-u-font-weight-light">A subscription may be required for some services.</p>
-                                    </div>
-                            </footer>
-                        </div>
-                    </div>
-                </main>
-<rh-footer data-analytics-region="page-footer">
-  <a slot="logo" href="https://redhat.com/en" data-analytics-category="Footer" data-analytics-text="Logo">
-    <img alt="Red Hat logo" src="https://static.redhat.com/libs/redhat/brand-assets/2/corp/logo--on-dark.svg"
-      loading="lazy" />
-  </a>
-  <rh-footer-social-link slot="social-links" icon="linkedin" href="https://www.linkedin.com/company/red-hat"
-    data-analytics-region="social-links-exit" data-analytics-category="Footer|social-links"
-    data-analytics-text="LinkedIn" accessible-label="LinkedIn"></rh-footer-social-link>
-  <rh-footer-social-link slot="social-links" icon="youtube" href="https://www.youtube.com/user/RedHatVideos"
-    data-analytics-region="social-links-exit" data-analytics-category="Footer|social-links"
-    data-analytics-text="YouTube" accessible-label="YouTube"></rh-footer-social-link>
-  <rh-footer-social-link slot="social-links" icon="facebook" href="https://www.facebook.com/redhatinc"
-    data-analytics-region="social-links-exit" data-analytics-category="Footer|social-links"
-    data-analytics-text="Facebook" accessible-label="Facebook"></rh-footer-social-link>
-  <rh-footer-social-link slot="social-links" icon="x" href="https://twitter.com/RedHat"
-    data-analytics-region="social-links-exit" data-analytics-category="Footer|social-links"
-    data-analytics-text="Twitter" accessible-label="X/Twitter"></rh-footer-social-link>
-  <h3 slot="links" data-analytics-text="Products">Products</h3>
-  <ul slot="links">
-    <li><a href="https://redhat.com/en/technologies/linux-platforms/enterprise-linux"
-        data-analytics-category="Footer|Products" data-analytics-text="Red Hat Enterprise Linux">Red Hat Enterprise
-        Linux</a></li>
-    <li><a href="https://redhat.com/en/technologies/cloud-computing/openshift" data-analytics-category="Footer|Products"
-        data-analytics-text="Red Hat OpenShift">Red Hat OpenShift</a></li>
-    <li><a href="https://redhat.com/en/technologies/management/ansible" data-analytics-category="Footer|Products"
-        data-analytics-text="Red Hat Ansible Automation Platform">Red Hat Ansible Automation Platform</a></li>
-    <li><a href="https://redhat.com/en/technologies/cloud-computing/openshift/cloud-services"
-        data-analytics-category="Footer|Products" data-analytics-text="Cloud services">Cloud services</a></li>
-    <li><a href="https://redhat.com/en/technologies/all-products" data-analytics-category="Footer|Products"
-        data-analytics-text="See all products">See all products</a></li>
-  </ul>
-  <h3 slot="links" data-analytics-text="Tools">Tools</h3>
-  <ul slot="links">
-    <li><a href="https://sso.redhat.com" data-analytics-category="Footer|Tools" data-analytics-text="My account">My
-        account</a></li>
-    <li><a href="https://redhat.com/en/services/training-and-certification" data-analytics-category="Footer|Tools"
-        data-analytics-text="Training and certification">Training and certification</a></li>
-    <li><a href="https://access.redhat.com" data-analytics-category="Footer|Tools"
-        data-analytics-text="Customer support">Customer support</a></li>
-    <li><a href="https://developers.redhat.com/" data-analytics-category="Footer|Tools"
-        data-analytics-text="Developer resources">Developer resources</a></li>
-    <li><a href="https://learn.redhat.com/" data-analytics-category="Footer|Tools"
-        data-analytics-text="Learning community">Learning community</a></li>
-    <li><a href="https://connect.redhat.com/" data-analytics-category="Footer|Tools"
-        data-analytics-text="Partner resources">Partner resources</a></li>
-    <li><a href="https://redhat.com/en/resources" data-analytics-category="Footer|Tools"
-        data-analytics-text="Resource library">Resource library</a></li>
-  </ul>
-  <h3 slot="links" data-analytics-text="Try buy sell">Try, buy & sell</h3>
-  <ul slot="links">
-    <li><a href="https://redhat.com/en/products/trials" data-analytics-category="Footer|Try buy sell"
-        data-analytics-text="Product trial center">Product trial center</a></li>
-    <li><a href="https://marketplace.redhat.com" data-analytics-category="Footer|Try buy sell"
-        data-analytics-text="Red Hat Marketplace">Red Hat Marketplace</a></li>
-    <li><a href="https://catalog.redhat.com/" data-analytics-category="Footer|Tools"
-        data-analytics-text="Red Hat Ecosystem Catalog">Red Hat Ecosystem Catalog</a></li>
-    <li><a href="http://redhat.force.com/finder/" data-analytics-category="Footer|Try buy sell"
-        data-analytics-text="Find a partner">Find a partner</a></li>
-    <li><a href="https://www.redhat.com/en/store" data-analytics-category="Footer|Try buy sell"
-        data-analytics-text="Red Hat Store">Red Hat Store</a></li>
-    <li><a href="https://cloud.redhat.com/" data-analytics-category="Footer|Tools"
-        data-analytics-text="Console">Console</a></li>
-  </ul>
-  <h3 slot="links" data-analytics-text="Communicate">Communicate</h3>
-  <ul slot="links">
-    <li><a href="https://redhat.com/en/services/consulting-overview#contact-us"
-        data-analytics-category="Footer|Communicate" data-analytics-text="Contact consulting">Contact consulting</a>
-    </li>
-    <li><a href="https://redhat.com/en/contact" data-analytics-category="Footer|Communicate"
-        data-analytics-text="Contact sales">Contact sales</a></li>
-    <li><a href="https://redhat.com/en/services/training-and-certification/contact-us"
-        data-analytics-category="Footer|Communicate" data-analytics-text="Contact training">Contact training</a></li>
-    <li><a href="https://redhat.com/en/about/social" data-analytics-category="Footer|Communicate"
-        data-analytics-text="Social">Social</a></li>
-  </ul>
-  <rh-footer-block slot="main-secondary">
-    <h3 slot="header" data-analytics-text="About Red Hat">About Red Hat</h3>
-    <p> We’re the world’s leading provider of enterprise open source solutions—including Linux, cloud, container, and
-      Kubernetes. We deliver hardened solutions that make it easier for enterprises to work across platforms and
-      environments, from the core datacenter to the network edge.</p>
-  </rh-footer-block>
-
-  <!-- Universal Footer -->
-  <rh-footer-universal slot="universal">
-    <h3 slot="links-primary" data-analytics-text="Red Hat legal and privacy links" hidden>Red Hat legal and privacy
-      links</h3>
-    <ul slot="links-primary" data-analytics-region="page-footer-bottom-primary">
-      <li><a href="https://redhat.com/en/about/company" data-analytics-category="Footer|Corporate"
-          data-analytics-text="About Red Hat">About Red Hat</a></li>
-      <li><a href="https://redhat.com/en/jobs" data-analytics-category="Footer|Corporate"
-          data-analytics-text="Jobs">Jobs</a></li>
-      <li><a href="https://redhat.com/en/events" data-analytics-category="Footer|Corporate"
-          data-analytics-text="Events">Events</a></li>
-      <li><a href="https://redhat.com/en/about/office-locations" data-analytics-category="Footer|Corporate"
-          data-analytics-text="Locations">Locations</a></li>
-      <li><a href="https://redhat.com/en/contact" data-analytics-category="Footer|Corporate"
-          data-analytics-text="Contact Red Hat">Contact Red Hat</a></li>
-      <li><a href="https://redhat.com/en/blog" data-analytics-category="Footer|Corporate"
-          data-analytics-text="Red Hat Blog">Red Hat Blog</a></li>
-      <li><a href="https://www.redhat.com/en/about/our-culture/inclusion" data-analytics-category="Footer|Corporate"
-          data-analytics-text="Inclusion at Red Hat">Inclusion at Red Hat</a></li>
-      <li><a href="https://coolstuff.redhat.com/" data-analytics-category="Footer|Corporate"
-          data-analytics-text="Cool Stuff Store">Cool Stuff Store</a></li>
-      <li><a href="https://www.redhat.com/en/summit" data-analytics-category="Footer|Corporate"
-          data-analytics-text="Red Hat Summit">Red Hat Summit</a></li>
-    </ul>
-    <rh-footer-copyright slot="links-secondary">© <span id="copyrightYear"></span> Red Hat</rh-footer-copyright>
-    <h3 slot="links-secondary" data-analytics-text="Red Hat legal and privacy links" hidden>Red Hat legal and privacy
-      links</h3>
-    <ul slot="links-secondary" data-analytics-region="page-footer-bottom-secondary">
-      <li><a href="https://redhat.com/en/about/privacy-policy"
-          data-analytics-category="Footer|Red Hat legal and privacy links"
-          data-analytics-text="Privacy statement">Privacy statement</a></li>
-      <li><a href="https://redhat.com/en/about/terms-use"
-          data-analytics-category="Footer|Red Hat legal and privacy links" data-analytics-text="Terms of use">Terms of
-          use</a></li>
-      <li><a href="https://redhat.com/en/about/all-policies-guidelines"
-          data-analytics-category="Footer|Red Hat legal and privacy links"
-          data-analytics-text="All policies and guidelines">All policies and guidelines</a></li>
-      <li><a href="https://redhat.com/en/about/digital-accessibility"
-          data-analytics-category="Footer|Red Hat legal and privacy links" data-analytics-text="Digital accessibility"
-          class="active">Digital accessibility</a></li>
-      <li><span id="teconsent" style="line-height: 1.1;"> </span></li>
-    </ul>
-  </rh-footer-universal>
-</rh-footer>
-
-<div id="consent_blackbar" style="position: fixed;bottom: 0;width: 100%;z-index: 5;padding: 10px;"></div>
-
-<script>
-  const currentDate = new Date();
-  const copyrightYear = currentDate.getFullYear();
-  document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById("copyrightYear").innerText = copyrightYear;
-  });
-</script>
-            </div>
-<script>
-    initHeaderDropdown();
-    initMobileMenu();
-
-    function loadHighlightStyle() {
-        var root = document.documentElement;
-        root.style.setProperty('--pfe-navigation__nav-bar--highlight-color', '#e00');
-        root.style.setProperty('--pfe-navigation__dropdown--highlight-color', '#e00');
-    }
-    window.addEventListener("load", loadHighlightStyle);
-</script>
-
-<script type="text/javascript">  
-    if (("undefined" !== typeof _satellite) && ("function" === typeof _satellite.pageBottom)) {  
-        _satellite.pageBottom();  
-    } 
-    $().ready(new function() {
-      sendAsyncUDEvent();
-    });
-</script>   
-<script type="text/javascript">  
-  window.appEventData = window.appEventData || [];
-  appEventData.push({
-    'event': 'Page Load Completed',
-  });
-</script>
+</div>
+    </div>
+  </div>
+<script nonce="fcyTSgAd+G8g+r20f3rZdg==">
+      window.performance.measure("AWSC-TB-Nav2-Preplatform-end", "AWSC-TB-Nav2-Preplatform-start");
+    </script>
+<script data-platform-asset="panorama" id="awsc-panorama-bundle" type="text/javascript" crossorigin="anonymous" src="https://a.b.cdn.console.awsstatic.com/a/v1/H6LSR35LNCFUF33U3BDRVBPKQUBSJEKDGNEGZAI2XORDUBINSJNA/init/ce4edb658ba547cb818403e3164d2a386c0c2edb16ea4e1fba612a9b805a47b2.js" data-url="https://a.b.cdn.console.awsstatic.com/a/v1/H6LSR35LNCFUF33U3BDRVBPKQUBSJEKDGNEGZAI2XORDUBINSJNA/7f95e006ece64cf49c3d242ff994e04f2a52c564806e4ba19a625d1397035c7c.js"></script>
 
 
-        </body>
-    </html>
+<script nonce="fcyTSgAd+G8g+r20f3rZdg==">
+      window.performance.mark("timeToStartExecConsoleAsset", {
+          detail: "AWSConsoleLatencyMetrics",
+      });
+    </script>
+<script src="https://a.b.cdn.console.awsstatic.com/a/v1/Y2KOPWW4HO57T326CSV4M4DE4CTTSWGZU4MIJ7KT3X4DZWJXZRLA/module-resolver.js" integrity="sha256-6xveWBjm8S7+GfdnkAfYwIFGeKZrvZtTK7BsWxWlUgE=" crossorigin="anonymous" tb-trace data-module-resolvers type="module" tb-js></script>
+<script nonce="fcyTSgAd+G8g+r20f3rZdg==">
+      window.performance.measure("AWSC-TB-Nav2-Console-scripts-end", "AWSC-TB-Nav2-Preplatform-start");
+    </script>
+
+
+
+</body>
+</html>
