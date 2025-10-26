@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: deployment
+metadata:
+  name: project
+  namespace: project
+  labels:
+    app: project
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: project
+  template:
+    metadata:
+      labels:
+        app: project
+    spec:
+      containers:
+      - name: project-container
+        image: rakesh2398/dockerhub:httpd_df
+        ports:
+        - containerPort: 80
