@@ -3,7 +3,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: project-lb
-  namespace: project
 spec:
   selector:
     app: project
@@ -12,3 +11,4 @@ spec:
       port: 80
       targetPort: 8080
   type: LoadBalancer
+
