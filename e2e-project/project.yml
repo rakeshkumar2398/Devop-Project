@@ -3,7 +3,6 @@ apiVersion: v1
 kind: deployment
 metadata:
   name: project
-  namespace: project
   labels:
     app: project
 spec:
@@ -20,4 +19,5 @@ spec:
       - name: project-container
         image: rakesh2398/dockerhub:5
         ports:
+
         - containerPort: 80
