@@ -18,6 +18,6 @@ spec:
     spec:
       containers:
       - name: project-container
-        image: rakesh2398/dockerhub:httpd_df
+        image: rakesh2398/dockerhub:5
         ports:
         - containerPort: 80
