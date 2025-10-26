@@ -67,7 +67,7 @@ docker run --rm \
                     sh '''
                         git config user.email "useandthrow14@gmail.com"
                         git config user.name "RakeshKumar"
-                        sed -i "s/dockerhub:.*/dockerhub:${BUILD_NUMBER}/g" deploymentfiles/deployment.yaml
+                        sed -i "s/dockerhub:.*/dockerhub:${BUILD_NUMBER}/g" e2e-project/project.yml
                         git add . 
                         git commit -m "Update deployment image to version ${BUILD_NUMBER}" 
                         git push https://${githubtoken}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main ''' 
