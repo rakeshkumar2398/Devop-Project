@@ -1,0 +1,78 @@
+# --------------------
+# Voting App Ingress
+# --------------------
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: voting-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - "www.chaikafe.in"
+    - "voting.chaikafe.in"
+    - "chaikafe.in"
+  rules:
+  - host: voting.chaikafe.in
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: voting
+            port:
+              number: 80
+  - host: chaikafe.in
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: voting
+            port:
+              number: 80
+  - host: www.chaikafe.in
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: voting
+            port:
+              number: 80
+
+---
+
+# --------------------
+# Result App Ingress
+# --------------------
+--- 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: result-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: / 
+spec:
+  ingressClassName: nginx  
+  tls:
+  - hosts:
+    - "result.chaikafe.in"
+  rules:
+  - host: result.chaikafe.in
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: result
+            port:
+              number: 80
+
