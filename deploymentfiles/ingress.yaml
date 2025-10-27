@@ -23,7 +23,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: voting
+            name: vote
             port:
               number: 80
   - host: chaikafe.in
@@ -33,7 +33,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: voting
+            name: vote
             port:
               number: 80
   - host: www.chaikafe.in
@@ -43,7 +43,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: voting
+            name: vote
             port:
               number: 80
 
@@ -75,4 +75,5 @@ spec:
             name: result
             port:
               number: 80
+
 
