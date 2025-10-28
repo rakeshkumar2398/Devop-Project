@@ -114,7 +114,7 @@ metadata:
     name: voting-app-deployment
     app: voting-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       name: voting-app-pod
@@ -229,4 +229,5 @@ spec:
       containers:
       - name: worker-app
         image: dockersamples/examplevotingapp_worker
+
 
