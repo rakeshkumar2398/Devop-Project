@@ -9,7 +9,7 @@ pipeline {
             }
         }
 
-        stage('Scan code of stage git') {
+        stage('Scan code of stage Git') {
             steps {
                 echo 'Scan using sonarqube'
               sh '''
@@ -29,14 +29,14 @@ pipeline {
             }
         }
 
-        stage('DOCKER-BUILD-IMAGE') {
+        stage('Building Image') {
             steps {
              echo 'Building Docker Image'
              sh 'docker build -t rakesh2398/dockerhub:${BUILD_NUMBER} -f Dockerfile .'
             }
         }
 
-        stage('Trivy Scan') {   
+        stage('Trivy-Scan') {   
             steps {
              echo 'Running Trivy Scan'
              sh 'trivy image rakesh2398/dockerhub:${BUILD_NUMBER}'
@@ -51,7 +51,7 @@ pipeline {
                 }
             }
         }
-        stage('Update Deployment File') { 
+        stage('Deployment File') { 
             environment { 
                 GIT_REPO_NAME = "Devop-Project" 
                 GIT_USER_NAME = "rakeshkumar2398" 
